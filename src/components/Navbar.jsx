@@ -3,8 +3,12 @@ import { useState } from 'react'
 import React from 'react'
 import Link from 'next/link'
 import './Navbar.css'
+import { usePathname } from 'next/navigation'
 
 const Navbar = () => {
+
+  const pathname = usePathname();
+
   return (
     <div>
 
@@ -15,11 +19,11 @@ const Navbar = () => {
           </div>
 
           <div className="center">
-            <p>Home</p>
-            <p>Tools </p>
-            <p>Resources</p>
-            <p>Blog</p>
-            <p>About Us</p>
+            <Link href="/" className={pathname === "/" ? "active" : ""}><p>Home</p></Link>
+            <Link href="/tools" className={pathname === "/tools" ? "active" : ""}><p>Tools</p></Link>
+            <Link href="/resources" className={pathname === "/resources" ? "active" : ""}><p>Resources</p></Link>
+            <Link href="/blog" className={pathname === "/blog" ? "active" : ""}><p>Blog</p></Link>
+            <Link href="/about" className={pathname === "/about" ? "active" : ""}><p>About Us</p></Link>
           </div>
 
           <div className="right">
@@ -30,6 +34,7 @@ const Navbar = () => {
             </div>
 
             <p>⨀</p>
+
             <button>Sign In</button>
 
           </div>
