@@ -7,6 +7,17 @@ body
 
 }
 
+:root{
+  --purple: #5532e9;
+  --purple-dark: #4320d0;
+  --navy: #101438;
+  --text: #171a36;
+  --muted: #666b82;
+  --border: #e8e8f1;
+  --bg: #ffffff;
+  --light-purple: #f6f3ff;
+}
+
 .navbar
 {
   display: flex;
@@ -51,10 +62,10 @@ body
 /* active */
 .active
 {
-  color: #0d3b70;
+  color: var( --purple);
   border-bottom: 1.5px solid #185ca8;
   transition: all 0.5s ease;
-  font-weight: bold;
+  font-weight: 800;
 
 }
 
@@ -80,9 +91,10 @@ body
   display: flex;
   text-align: center;
   align-items: center;
-  border: 1px solid rgb(173, 168, 168);
-  border-radius: 20px;
+  /* border: 1px solid rgb(173, 168, 168); */
+  border-radius: 10px;
   cursor: text;
+  box-shadow: 4px 5px 30px rgb(173, 168, 168);
 
 }
 
@@ -95,8 +107,8 @@ body
 .navbar .right .search input
 {
   border: none;
-  padding: 10px;
-  border-radius: 20px 0 0 20px;
+  padding: 15px;
+  border-radius: 10px 0 0 10px;
   font-size: 13px;
 
 }
@@ -106,9 +118,10 @@ body
   border: none;
   color: white;
   cursor: pointer;
-  background-color: #195faf;
+  background-color: var( --purple);
   font-size: 13px;
-  padding: 10px;
+  font-weight: bold;
+  padding: 15px 20px;
   transition: all 0.5s ease;
   border-radius: 10px;
   border: 2px solid transparent;
