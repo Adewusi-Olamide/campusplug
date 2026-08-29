@@ -117,7 +117,7 @@ const Navbar = () => {
             <Moon size={20} />
           </p>
 
-          <button>Sign In</button>
+          <button>Get Started</button>
 
         </div>
 
