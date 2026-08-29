@@ -59,6 +59,7 @@ const page = () => {
             <Image className='img' src="/images/IMG-20260827-WA0071 (1).jpg" width={800} height={800} alt='homepage' />
           </div>
         </div>
+        
       </div>
       
     </div>
