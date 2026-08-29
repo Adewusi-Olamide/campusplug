@@ -100,8 +100,18 @@ body
 
 .navbar .right .search p
 {
+  transition: all 0.2s ease;
   margin-right: 20px;
+  cursor: pointer;
   
+}
+
+.navbar .right .search p:active
+{
+  color: #666b82;
+  transition: all 0.2s ease;
+  transform: scale(0.98);
+
 }
 
 .navbar .right .search input

@@ -4,6 +4,8 @@ import React from 'react'
 import Link from 'next/link'
 import './Navbar.css'
 import { usePathname } from 'next/navigation'
+import { Search } from 'lucide-react'
+import { Moon } from 'lucide-react'
 
 const Navbar = () => {
 
@@ -30,10 +32,10 @@ const Navbar = () => {
 
             <div className='search'>
               <input type='text' placeholder='Search tools...' />
-              <p>⨀</p>
+              <p><Search size={20} /></p>
             </div>
 
-            <p>⨀</p>
+            <p><Moon size={20} /></p>
 
             <button>Sign In</button>
 
