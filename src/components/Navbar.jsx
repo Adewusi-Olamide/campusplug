@@ -7,6 +7,7 @@ import './Navbar.css'
 import { usePathname, useRouter } from 'next/navigation'
 import { Search } from 'lucide-react'
 import { Moon } from 'lucide-react'
+import { GraduationCapIcon } from 'lucide-react'
 import { CircleAlert } from 'lucide-react'
 
 const Navbar = () => {
@@ -57,7 +58,7 @@ const Navbar = () => {
       <div className='navbar'>
 
         <div className="left">
-          <h1>CampusPlug</h1>
+          <h1><GraduationCapIcon id="logo" size={50} />Campus<span className="campusplug">Plug</span></h1>
         </div>
 
         <div className="center">

@@ -30,12 +30,35 @@ body
   position: fixed;
   z-index: 9999;
   box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.452);
   
+}
+
+.navbar .left
+{
+  cursor: pointer;
+  
+}
+
+.navbar .left .campusplug
+{
+  color: var( --purple);
+
+}
+
+.navbar .left #logo
+{
+  color: var( --purple);
+
 }
 
 .navbar .left h1
 {
   font-size: 24px;
+  font-weight: 800;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 
 }
 
@@ -125,10 +148,6 @@ body
 
 .navbar .right .no-results
 {
-  /* background-color: rgba(255, 255, 255, 0.9);
-  color: #333;
-  backdrop-filter: blur(10px);
-  box-shadow: 0  4px 15px rgba(0, 0, 0, 0.08); */
   background-color: #f5f5f5;
   color: #333;
   padding: 10px;
