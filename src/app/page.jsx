@@ -1,15 +1,15 @@
 'use client'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import React from 'react'
 import Image from 'next/image'
 import { CheckSquare } from 'lucide-react'
 import { GraduationCap } from 'lucide-react'
 import { Calculator } from 'lucide-react'
 import { Calendar } from 'lucide-react'
-import { ArrowRightSquare } from 'lucide-react'
 import { Clock } from 'lucide-react'
-import { Search } from 'lucide-react'
+import { Layers } from 'lucide-react'
+import { Notebook } from 'lucide-react'
+import { Target } from 'lucide-react'
 import './page.css'
 
 const page = () => {
@@ -89,6 +89,38 @@ const page = () => {
             </div>
 
           </div>
+        </div>
+
+        <div className="ctn-3">
+
+          <div className="left">
+            <h3>STUDY TOOLS</h3>
+            <h1>Smart Tools for <br /> Better Results</h1>
+            <p>Use our easy-to-use tools to plan your <br /> study sessions, track your progress, <br /> and stay consistent every day.</p>
+            <button>Explore All Tools →</button>
+          </div>
+          
+          <div className="tools">
+            <p className="note"><Notebook size={25} /></p>
+            <h1>Notes</h1>
+            <p>Create and organize <br /> beautiful notes.</p>
+            <button>Open Tool →</button>
+          </div>
+
+          <div className="tools">
+            <p className="flashcard"><Layers size={25} /></p>
+            <h1>Flashcards</h1>
+            <p>Learn faster with smart <br /> flashcards.</p>
+            <button>Open Tool →</button>
+          </div>
+
+          <div className="tools">
+            <p className="focus"><Target size={25} /></p>
+            <h1>Focus Mode</h1>
+            <p>Eliminate distractions <br /> and stay in flow.</p>
+            <button>Open Tool →</button>
+          </div>
+
         </div>
 
       </div>

@@ -57,9 +57,11 @@ const Navbar = () => {
 
       <div className='navbar'>
 
+        <Link href="/">
         <div className="left">
           <h1><GraduationCapIcon id="logo" size={50} />Campus<span className="campusplug">Plug</span></h1>
         </div>
+        </Link>
 
         <div className="center">
           <Link href="/" className={pathname === "/" ? "active" : ""}>
