@@ -1,0 +1,149 @@
+body
+{
+  padding: 10px 3%;
+  box-sizing: border-box;
+  color: black;
+  background-color: white;
+
+}
+
+:root{
+  --purple: #5532e9;
+  --purple-dark: #4320d0;
+  --navy: #101438;
+  --text: #171a36;
+  --muted: #666b82;
+  --border: #e8e8f1;
+  --bg: #ffffff;
+  --light-purple: #f6f3ff;
+  
+}
+
+.ctn
+{
+    position: relative;
+    padding: 40px  0;
+
+}
+
+.footer
+{
+    display: flex;
+    margin: auto;
+    gap: 110px;
+
+}
+
+.footer .left h2
+{
+    font-size: 24px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.footer .left h2 #logo
+{
+    color: var(  --purple);
+
+}
+
+.footer .left .campusplug
+{
+    color: var( --purple);
+
+}
+
+.footer .left #p
+{
+    font-size: 15px;
+
+}
+
+.footer .center
+{
+    display: flex;
+    gap: 80px;
+
+}
+
+.footer .center .header
+{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+}
+
+.footer .center .header h1
+{
+    font-weight: bold;
+    font-size: 17px;
+
+}
+
+.footer .center .header p
+{
+    font-size: 15px;
+    color: grey;
+
+}
+
+.footer .right
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+
+.footer .right h1
+{
+    font-size: 17px;
+    font-weight: bold;
+
+}
+
+.footer .right .socials
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+}
+
+.footer .right .socials p
+{
+    cursor: pointer;
+    background-color: rgba(128, 0, 128, 0.082);
+    padding: 10px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    transition: all 0.5s ease;
+    
+}
+
+.footer .right .socials p:hover
+{
+    transition: all 0.5s ease;
+    border: 1px solid var(--purple);
+    transform: scale(1.1);
+
+}
+
+.footer .right .privacy p
+{
+    color: grey;
+    font-size: 15px;
+
+}
+
+.footer .right .privacy
+{
+    display: flex;
+    gap: 30px;
+    margin-top: 70px;
+
+}

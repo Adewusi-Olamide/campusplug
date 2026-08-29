@@ -284,12 +284,19 @@ body
 .ctn-3
 {
     display: flex;
-    gap: 60px;
     margin-top: 50px;
 
 }
 
-.ctn-3 .left h3
+.ctn-3 .features
+{
+    display: flex;
+    margin: auto;
+    gap: 80px;
+
+}
+
+.ctn-3  .features .left h3
 {
     font-size: 15px;
     color: var(  --purple);
@@ -297,7 +304,7 @@ body
 
 }
 
-.ctn-3 .left h1
+.ctn-3  .features .left h1
 {
     font-size: 27px;
     font-weight: bold;
@@ -305,7 +312,7 @@ body
 
 }
 
-.ctn-3 .left p
+.ctn-3  .features .left p
 {
     margin-top: 10px;
     font-size: 14px;
@@ -313,7 +320,7 @@ body
 
 }
 
-.ctn-3 .left button
+.ctn-3  .features .left button
 {
     background-color: white;
     color: var( --purple);
@@ -328,7 +335,7 @@ body
 
 }
 
-.ctn-3 .left button:hover
+.ctn-3  .features .left button:hover
 {
     background-color: var( --purple);
     color: white;
@@ -336,22 +343,22 @@ body
 
 }
 
-.ctn-3 .left button:active
+.ctn-3  .features .left button:active
 {
     transform: scale(0.95);
 
 }
 
-.ctn-3 .tools
+.ctn-3  .features .tools
 {
     border-radius: 10px;
     cursor: pointer;
-    padding: 20px 50px;
+    padding: 20px 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
 
 }
 
-.ctn-3 .tools .note
+.ctn-3  .features .tools .note
 {
     color: red;
     background-color: rgba(255, 0, 0, 0.089);
@@ -362,7 +369,7 @@ body
 
 }
 
-.ctn-3 .tools .flashcard
+.ctn-3  .features .tools .flashcard
 {
     color: purple;
     background-color: rgba(128, 0, 128, 0.082);
@@ -373,7 +380,7 @@ body
 
 }
 
-.ctn-3 .tools .focus
+.ctn-3  .features .tools .focus
 {
     color: lime;
     background-color: rgba(0, 255, 0, 0.192);
@@ -384,7 +391,7 @@ body
 
 }
 
-.ctn-3 .tools h1
+.ctn-3  .features .tools h1
 {
     font-weight: bold;
     font-size: 17px;
@@ -392,7 +399,7 @@ body
 
 }
 
-.ctn-3 .tools p
+.ctn-3  .features .tools p
 {
     font-size: 14px;
     color: grey;
@@ -400,11 +407,128 @@ body
 
 }
 
-.ctn-3 .tools button
+.ctn-3  .features .tools button
 {
     margin-top: 20px;
     cursor: pointer;
+    transition: all 0.5s ease;
     font-weight: bold;
     color: var( --purple);
+
+}
+
+.ctn-3  .features .tools button:hover
+{
+    color: rgba(128, 0, 128, 0.26);
+    transition: all 0.5s ease;
+
+}
+
+.ctn-3  .features .tools button:active
+{
+    transform: scale(0.95);
+
+}
+
+.ctn-4
+{
+    display: flex;
+    align-items: center;
+    margin-top: 90px;
+    background-color: rgba(173, 216, 230, 0.384);
+    padding: 30px;
+    border: none;
+    border-radius: 10px;
+
+}
+
+.ctn-4 .features
+{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    gap: 80px;
+
+}
+
+.ctn-4 .left h1
+{
+    font-size: 27px;
+    font-weight: bold;
+
+}
+
+.ctn-4 .left p
+{
+    color: grey;
+    font-size: 15px;
+    margin-top: 10px;
+
+}
+
+.ctn-4 .center
+{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.ctn-4 .center button
+{
+    background-color: var(  --purple);
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    width: fit-content;
+    transition: all 0.5s ease;
+    font-weight: bold;
+
+}
+
+.ctn-4 .center button:hover
+{
+    background-color: white;
+    border: 2px solid var( --purple);
+    transition: all 0.5s ease;
+    color: var( --purple);
+
+}
+
+.ctn-4 .center button:active
+{
+    transform: scale(0.95);
+
+}
+
+.ctn-4 .center .content
+{
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+
+}
+
+.ctn-4 .center .content .check
+{
+    color: var( --purple);
+
+}
+
+.ctn-4 .center .content p
+{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+
+}
+
+.ctn-4 .right
+{
+    cursor: pointer;
 
 }

@@ -10,7 +10,9 @@ import { Clock } from 'lucide-react'
 import { Layers } from 'lucide-react'
 import { Notebook } from 'lucide-react'
 import { Target } from 'lucide-react'
+import { Check } from 'lucide-react'
 import './page.css'
+import Link from 'next/link'
 
 const page = () => {
 
@@ -29,7 +31,7 @@ const page = () => {
       if (index >= text.length) {
         clearInterval(typing);
       }
-    }, 50);
+    }, 40);
 
     return () => clearInterval(typing);
   }, []);
@@ -42,7 +44,7 @@ const page = () => {
         <div className="ctn">
           <div className="left">
             <h3>All-in-one Study Companion <GraduationCap fontWeight={800} size={20} /></h3>
-            <h1>Study Smarter, <br /> <span className="students">Achieve More</span> </h1>
+            <h1>Study Smarter, <span className="students">Achieve More</span> </h1>
             
             <p>{displayText}</p>
 
@@ -67,25 +69,25 @@ const page = () => {
             <div className="d">
               <p className='clock'><Clock size={25} /></p>
               <h2>Smart Study Timer</h2>
-              <p>Stay focused with the study timer <br /> feature and boost productivity.</p>
+              <p>Stay focused with the study timer feature and boost productivity.</p>
             </div>
 
             <div className="d">
               <p className='check'><CheckSquare size={25} /></p>
               <h2>Task & Goal Tracker</h2>
-              <p>Organize tasks, set goals, and <br /> track your daily progress.</p>
+              <p>Organize tasks, set goals, and track your daily progress.</p>
             </div>
 
             <div className="d">
               <p className='calculator'><Calculator size={25} /></p>
               <h2>GPA Calculator</h2>
-              <p>Calculate your GPA and track <br /> academic performance.</p>
+              <p>Calculate your GPA and track academic performance.</p>
             </div>
 
             <div className="d">
               <p className='calendar'><Calendar size={25} /></p>
               <h2>Exam Countdown</h2>
-              <p>Never miss a deadline with <br /> smart countdown reminders.</p>
+              <p>Never miss a deadline with smart countdown reminders.</p>
             </div>
 
           </div>
@@ -93,34 +95,59 @@ const page = () => {
 
         <div className="ctn-3">
 
-          <div className="left">
-            <h3>STUDY TOOLS</h3>
-            <h1>Smart Tools for <br /> Better Results</h1>
-            <p>Use our easy-to-use tools to plan your <br /> study sessions, track your progress, <br /> and stay consistent every day.</p>
-            <button>Explore All Tools →</button>
-          </div>
-          
-          <div className="tools">
-            <p className="note"><Notebook size={25} /></p>
-            <h1>Notes</h1>
-            <p>Create and organize <br /> beautiful notes.</p>
-            <button>Open Tool →</button>
+            <div className="features">
+              <div className="left">
+                <h3>STUDY TOOLS</h3>
+                <h1>Smart Tools for Better Results</h1>
+                <p>Use our easy-to-use tools to plan your <br /> study sessions, track your progress, and stay consistent every day.</p>
+                <Link href="/tools"><button>Explore All Tools →</button></Link>
+              </div>
+              
+              <div className="tools">
+                <p className="note"><Notebook size={25} /></p>
+                <h1>Notes</h1>
+                <p>Create and organize beautiful notes.</p>
+                <button>Open Tool →</button>
+              </div>
+
+              <div className="tools">
+                <p className="flashcard"><Layers size={25} /></p>
+                <h1>Flashcards</h1>
+                <p>Learn faster with smart flashcards.</p>
+                <button>Open Tool →</button>
+              </div>
+
+              <div className="tools">
+                <p className="focus"><Target size={25} /></p>
+                <h1>Focus Mode</h1>
+                <p>Eliminate distractions and stay in flow.</p>
+                <button>Open Tool →</button>
+              </div>
           </div>
 
-          <div className="tools">
-            <p className="flashcard"><Layers size={25} /></p>
-            <h1>Flashcards</h1>
-            <p>Learn faster with smart <br /> flashcards.</p>
-            <button>Open Tool →</button>
-          </div>
+        </div>
 
-          <div className="tools">
-            <p className="focus"><Target size={25} /></p>
-            <h1>Focus Mode</h1>
-            <p>Eliminate distractions <br /> and stay in flow.</p>
-            <button>Open Tool →</button>
-          </div>
+        <div className="ctn-4">
+          <div className="features">
+            <div className="left">
+              <h1>Ready to Level Up <br /> Your  Study Game?</h1>
+              <p>Join thousands of students who are already <br /> studying smarter and achieving more.</p>
+            </div>
 
+            <div  className="center">
+              <button>Get  Started Free →</button>
+
+              <div className="content">
+                <p><Check className="check" size={15} />Free Forver</p>
+                <p><Check className="check" size={15} />No Credit Card</p>
+                <p><Check className="check" size={15} />Easy To Use</p>
+              </div>
+            </div>
+
+            <div className="right">
+              <Image src="/images/schoolbag.png" width={200} height={200} alt='' />
+            </div>
+          </div>
         </div>
 
       </div>
