@@ -56,10 +56,10 @@ const page = () => {
           </div>
 
           <div className="right">
-            <Image className='img' src="/images/IMG-20260827-WA0071 (1).jpg" width={800} height={800} alt='homepage' />
+            <Image className='img' src="/images/boy.png" width={900} height={900} alt='homepage' />
           </div>
         </div>
-        
+
       </div>
       
     </div>

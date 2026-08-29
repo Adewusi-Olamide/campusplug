@@ -62,6 +62,12 @@ body
 
 }
 
+.ctn .right
+{
+    width: 68%;
+
+}
+
 .ctn .right .img
 {
     transition: all 0.5s ease;
