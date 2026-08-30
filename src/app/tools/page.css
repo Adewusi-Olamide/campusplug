@@ -45,7 +45,8 @@ a{
 
 .tools-hero{
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 80px 10px auto;
+    /* margin: 0 auto; */
     min-height: 420px;
     display: grid;
     grid-template-columns: 1fr 1fr;

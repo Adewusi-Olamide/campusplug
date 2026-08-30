@@ -31,7 +31,7 @@ const page = () => {
       if (index >= text.length) {
         clearInterval(typing);
       }
-    }, 40);
+    }, 30);
 
     return () => clearInterval(typing);
   }, []);

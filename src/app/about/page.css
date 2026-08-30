@@ -1,0 +1,410 @@
+body
+{
+  padding: 10px 3%;
+  box-sizing: border-box;
+  color: black;
+  background-color: white;
+
+}
+
+:root{
+  --purple: #5532e9;
+  --purple-dark: #4320d0;
+  --navy: #101438;
+  --text: #171a36;
+  --muted: #666b82;
+  --border: #e8e8f1;
+  --bg: #ffffff;
+  --light-purple: #f6f3ff;
+  
+}
+
+.box
+{
+    padding: 1px 3%;
+
+}
+
+.containers
+{
+    margin-top: 190px;
+    display: flex;
+    gap: 10px;
+    
+}
+
+.containers .left
+{
+    display: flex;
+    flex-direction: column;
+    width: 64%;
+
+}
+
+.containers .left h1
+{
+    font-weight: 800;
+    font-size: 58px;
+
+}
+
+.containers .left .students
+{
+    color: var( --purple);
+
+}
+
+.containers .left p
+{
+    color: grey;
+    font-size: 18px;
+    height: 60px;
+    margin-top: 20px;
+
+}
+
+.containers .left h3
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: var( --purple);
+    background-color: #f8fafe;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: fit-content;
+    font-weight: bold;
+
+}
+
+.containers .left button
+{
+    color: white;
+    cursor: pointer;
+    background-color: var(--purple);
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+    width: fit-content;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 40px;
+
+}
+
+.containers .left button:hover
+{
+    transition: all 0.5s ease;
+    border: 2px solid var(--purple);
+    color: var(--purple);
+    background-color: white;
+
+}
+
+.containers .left button:active
+{
+    transform: scale(0.95);
+
+}
+
+.containers .right
+{
+    width: 36%;
+
+}
+
+.containers .right .image
+{
+    transition: all 0.5s ease;
+    height: 400px;
+    cursor: pointer;
+    height: 90%;
+
+}
+
+.containers .right .image:hover
+{
+    transition: all 0.5s ease;
+    transform: scale(0.90);
+
+}
+
+.containers-2
+{
+    margin-top: 50px;
+
+}
+
+.containers-2 .head
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+}
+
+.containers-2 .head h3
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: var( --purple);
+    background-color: #f8fafe;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: fit-content;
+    font-weight: bold;
+
+}
+
+.containers-2 .head h1
+{
+    font-weight: bold;
+    font-size: 27px;
+    margin-top: 10px;
+
+}
+
+.containers-2 .head p
+{
+    font-size: 16px;
+    margin-top: 20px;
+
+}
+
+.containers-2 .about
+{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    gap: 30px;
+    margin-top: 30px;
+
+}
+
+.containers-2 .about div
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
+}
+
+.containers-2 .about div .icon
+{
+    color: var(--purple);
+    background-color: rgba(173, 216, 230, 0.301);
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+
+}
+
+.containers-2 .about div h1
+{
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 10px;
+
+}
+
+.containers-2 .about div p
+{
+    margin-top: 15px;
+    color: grey;
+    font-size: 15px;
+
+}
+
+.containers-3
+{
+    margin-top: 190px;
+    display: flex;
+    gap: 25px;
+    
+}
+
+.containers-3 .left
+{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+}
+
+.containers-3 .left h1
+{
+    font-weight: 800;
+    font-size: 40px;
+    margin-top: 20px;
+
+}
+
+.containers-3 .left .students
+{
+    color: var( --purple);
+
+}
+
+.containers-3 .left p
+{
+    color: grey;
+    font-size: 18px;
+    height: 60px;
+    margin-top: 20px;
+
+}
+
+.containers-3 .left h3
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: var( --purple);
+    background-color: #f8fafe;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: fit-content;
+    font-weight: bold;
+
+}
+
+.containers-3 .left button
+{
+    color: white;
+    cursor: pointer;
+    background-color: var(--purple);
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+    width: fit-content;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 40px;
+
+}
+
+.containers-3 .left button:hover
+{
+    transition: all 0.5s ease;
+    border: 2px solid var(--purple);
+    color: var(--purple);
+    background-color: white;
+
+}
+
+.containers-3 .left button:active
+{
+    transform: scale(0.95);
+
+}
+
+.containers-3 .right
+{
+    width: 50%;
+
+}
+
+.containers-3 .right .image
+{
+    transition: all 0.5s ease;
+    height: 400px;
+    cursor: pointer;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+
+.containers-4
+{
+    margin-top: 100px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    background-color: rgba(173, 216, 230, 0.384);
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+
+}
+
+.containers-4 .left
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+}
+
+.containers-4 .left .grad
+{
+    color: var(--purple);
+    background-color: white;
+    padding: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+
+}
+
+.containers-4 .left .notice h1
+{
+    font-size: 24px;
+    font-weight: bold;
+
+}
+
+.containers-4 .left .notice p
+{
+    margin-top: 10px;
+    font-size: 16px;
+    color: grey;
+    
+}
+
+.containers-4 .right
+{
+    margin-left: auto;
+
+}
+
+.containers-4 .right button
+{
+    color: white;
+    background-color: var(--purple);
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    transition: all 0.5s ease;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+
+}
+
+.containers-4 .right button:hover
+{
+    color: var(--purple);
+    background-color: white;
+    border: 2px solid var(--purple);
+    transition: all 0.5s ease;
+
+}
+
+.containers-4 .right button:active
+{
+    transform: scale(0.95);
+
+}
