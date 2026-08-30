@@ -1,0 +1,193 @@
+body
+{
+  padding: 10px 3%;
+  box-sizing: border-box;
+  color: black;
+  background-color: white;
+
+}
+
+:root{
+  --purple: #5532e9;
+  --purple-dark: #4320d0;
+  --navy: #101438;
+  --text: #171a36;
+  --muted: #666b82;
+  --border: #e8e8f1;
+  --bg: #ffffff;
+  --light-purple: #f6f3ff;
+  
+}
+
+.box
+{
+    padding: 1px 3%;
+
+}
+
+.container
+{
+    margin-top: 190px;
+    display: flex;
+    gap: 10px;
+    
+}
+
+.container .left
+{
+    display: flex;
+    flex-direction: column;
+    width: 57%;
+
+}
+
+.container .left h1
+{
+    font-weight: 800;
+    font-size: 58px;
+
+}
+
+.container .left .students
+{
+    color: var( --purple);
+
+}
+
+.container .left p
+{
+    color: grey;
+    font-size: 18px;
+    height: 60px;
+    margin-top: 20px;
+
+}
+
+.container .left h3
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: var( --purple);
+    background-color: #f8fafe;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: fit-content;
+    font-weight: bold;
+
+}
+
+.container .left .content
+{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: 40px;
+    
+}
+
+.container .left .content #all
+{
+    cursor: pointer;
+    background-color: var(--purple);
+    color: white;
+    transition: all 0.5s ease;
+    border: 2px solid transparent;
+
+}
+
+.container .left .content #all:hover
+{
+    color: var(--purple);
+    background-color: white;
+    border: 2px solid var(--purple);
+    transition: all 0.5s ease;
+
+}
+
+.container .left .content button
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid grey;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.5s ease;
+
+}
+
+.container .left .content #notebookpen
+{
+    color: var(--purple);
+
+}
+
+.container .left .content .notebookpen:hover
+{
+    border: 2px solid var(--purple);
+    transition: all 0.5s esae;
+    color: var(--purple);
+
+}
+
+
+.container .left .content #lightbulb
+{
+    color: lime;
+
+}
+
+.container .left .content .lightbulb:hover
+{
+    border: 2px solid lime;
+    transition: all 0.5s ease;
+    color: lime;
+
+}
+
+.container .left .content #notebook
+{
+    color: purple;
+
+}
+
+.container .left .content .notebook:hover
+{
+    border: 2px solid purple;
+    color: purple;
+    transition: all 0.5s ease;
+
+}
+
+.container .left .content button:active
+{
+    transform: scale(0.95)
+    ;
+}
+
+.container .right
+{
+    width: 43%;
+
+}
+
+.container .right .image
+{
+    transition: all 0.5s ease;
+    height: 400px;
+    cursor: pointer;
+
+}
+
+.container .right .image:hover
+{
+    transition: all 0.5s ease;
+    transform: scale(0.90);
+
+}
