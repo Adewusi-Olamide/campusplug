@@ -278,13 +278,14 @@ body
     color: grey;
     font-size: 15px;
     margin-top: 10px;
+    font-weight: 400;
 
 }
 
 .ctn-3
 {
     display: flex;
-    margin-top: 50px;
+    margin-top: 70px;
 
 }
 
@@ -292,7 +293,7 @@ body
 {
     display: flex;
     margin: auto;
-    gap: 80px;
+    gap: 10px;
 
 }
 
