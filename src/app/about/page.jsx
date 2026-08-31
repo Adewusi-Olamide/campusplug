@@ -43,7 +43,7 @@ const page = () => {
             <h3>All-in-one Study Companion <GraduationCap fontWeight={800} size={20} /></h3>
             <h1>Empowering students, <br /><span className="students"> Building futures.</span> </h1>
             
-            <p>{displayText}</p>
+            <p className="displaytext2">{displayText}</p>
 
             <Link href="/resources"><button>Explore Resources →</button></Link>
 
