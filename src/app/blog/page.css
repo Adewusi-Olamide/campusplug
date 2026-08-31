@@ -30,6 +30,8 @@
   font-size: clamp(42px, 6vw, 70px);
   line-height: 1.05;
   letter-spacing: -2px;
+  font-weight: bold;
+
 }
 
 .blog-hero h1 span {
@@ -135,17 +137,19 @@
 
 .post-category {
   display: inline-block;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 1px;
   color: var(--purple);
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 .featured-content h2 {
   margin: 15px 0;
-  font-size: 34px;
+  font-size: 30px;
   line-height: 1.2;
+  font-weight: bold;
 }
 
 .featured-content p {
@@ -163,13 +167,28 @@
 }
 
 .read-button {
-  border: none;
-  background: #172033;
+  border: 2px solid transparent;
+  background: var(--purple);
+  font-weight: bold;
   color: white;
   padding: 12px 20px;
   border-radius: 9px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
+  transition: all 0.5s ease;
+}
+
+.read-button:hover {
+  transition: all 0.5s ease;
+  background-color: white;
+  color: var(--purple);
+  border: 2px solid var(--purple);
+
+}
+
+.read-button:active{
+    transform: scale(0.95);
+    
 }
 
 /* BLOG */
@@ -188,15 +207,16 @@
 }
 
 .section-heading span {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: bold;
   letter-spacing: 1.5px;
   color: var(--purple);
 }
 
 .section-heading h2 {
   margin: 8px 0 0;
-  font-size: 32px;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .section-heading p {
@@ -217,6 +237,7 @@
   border-radius: 16px;
   background: white;
   transition: 0.25s ease;
+  font-weight: 600;
 }
 
 .blog-card:hover {
@@ -314,15 +335,16 @@
 }
 
 .blog-newsletter span {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 15px;
   letter-spacing: 1.5px;
   color: var(--purple);
+  font-weight: bold;
 }
 
 .blog-newsletter h2 {
   margin: 10px 0;
-  font-size: 27px;
+  font-weight: bold;
+  font-size: 30px;
 }
 
 .blog-newsletter p {
@@ -343,6 +365,7 @@
   outline: none;
   padding: 0 15px;
   border-radius: 8px 0 0 8px;
+  font-size: 15px;
 }
 
 .newsletter-form button {
@@ -350,6 +373,8 @@
   padding: 0 20px;
   background: var(--purple);
   color: white;
+  font-size: 15px;
+  font-weight: bold;
   border-radius: 0 8px 8px 0;
   cursor: pointer;
 }

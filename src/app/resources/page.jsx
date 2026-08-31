@@ -20,7 +20,7 @@ import { ShieldCheck } from 'lucide-react'
 
 const page = () => {
 
-  const text = "Curated materials, guides, and tools to help you learn smarter, stay organised, and achieve more.";
+  const text = "Curated materials, guides, and tools designed to help you alongside applicants learn smarter, stay organised, and achieve more.";
   const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
