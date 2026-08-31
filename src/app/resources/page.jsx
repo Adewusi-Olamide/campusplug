@@ -20,7 +20,7 @@ import { ShieldCheck } from 'lucide-react'
 
 const page = () => {
 
-  const text = "Curated materials, guides, and tools designed to help you alongside applicants learn smarter, stay organised, and achieve more.";
+  const text = "Curated materials, guides, and tools designed to help students learn smarter, stay organised, and achieve more.";
   const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const page = () => {
             <h3>All-in-one Study Companion <GraduationCap fontWeight={800} size={20} /></h3>
             <h1>Everything You Need <br /><span className="students"> To Study</span> </h1>
             
-            <p>{displayText}</p>
+            <p className="displaytext">{displayText}</p>
 
             <div className="content">
               <button id="all"><Brain size={20} /> All</button>

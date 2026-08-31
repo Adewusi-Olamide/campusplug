@@ -16,7 +16,7 @@ import Link from 'next/link'
 
 const page = () => {
 
-  const text = "Smart, free and easy-to-use tools to help you study better, plan smarter , and achieve more.";
+  const text = "Smart, free and easy-to-use tools to help you study better, plan smarter, and achieve more.";
   const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const page = () => {
             <h3>All-in-one Study Companion <GraduationCap fontWeight={800} size={20} /></h3>
             <h1>Study Smarter, <span className="students">Achieve More</span> </h1>
             
-            <p>{displayText}</p>
+            <p className="displaytext1">{displayText}</p>
 
             <div className="buttons">
               <button className='get-started'>Get Started Free →</button>

@@ -171,6 +171,12 @@ body
     ;
 }
 
+.container .left .displaytext
+{
+    width: 90%;
+
+}
+
 .container .right
 {
     width: 41%;
