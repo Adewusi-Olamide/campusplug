@@ -188,7 +188,7 @@
 
 .read-button:active{
     transform: scale(0.95);
-    
+
 }
 
 /* BLOG */
@@ -229,14 +229,16 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
+  cursor: pointer;
 }
 
 .blog-card {
   overflow: hidden;
-  border: 1px solid #e8ebf1;
+  box-shadow: 0 15px 35px rgba(30, 40, 70, 0.08);
   border-radius: 16px;
   background: white;
   transition: 0.25s ease;
+  margin-top: 40px;
   font-weight: 600;
 }
 

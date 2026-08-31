@@ -38,7 +38,7 @@ const page = () => {
       category: "Study Tips",
       date: "August 28, 2026",
       readTime: "5 min read",
-      image: "/images/study-smart.jpg",
+      image: "/images/studysmarter.jpg",
     },
     {
       id: 2,
@@ -48,7 +48,7 @@ const page = () => {
       category: "Exams",
       date: "August 24, 2026",
       readTime: "6 min read",
-      image: "/images/exam-prep.jpg",
+      image: "/images/prepare.jpg",
     },
     {
       id: 3,
@@ -68,7 +68,7 @@ const page = () => {
       category: "Learning",
       date: "August 17, 2026",
       readTime: "4 min read",
-      image: "/images/flashcards.jpg",
+      image: "/images/flashcard.jpg",
     },
     {
       id: 5,
@@ -78,7 +78,7 @@ const page = () => {
       category: "Study Tips",
       date: "August 12, 2026",
       readTime: "5 min read",
-      image: "/images/study-habits.jpg",
+      image: "/images/studyinghabit.jpg",
     },
     {
       id: 6,
@@ -88,7 +88,7 @@ const page = () => {
       category: "Productivity",
       date: "August 8, 2026",
       readTime: "7 min read",
-      image: "/images/time-management.jpg",
+      image: "/images/time.jpg",
     },
   ];
 
@@ -163,7 +163,7 @@ const page = () => {
 
           <div className="featured-image">
             <Image
-              src="/images/featured-blog.jpg"
+              src="/images/studentstudying.jpg"
               alt="Student studying"
               fill
             />
