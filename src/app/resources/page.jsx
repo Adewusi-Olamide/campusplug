@@ -107,7 +107,7 @@ const page = () => {
 
             <div className="syllabus">
               <p className="tips-img"><Lightbulb size={30} /></p>
-              <h3>Exam Preparatin Tips</h3>
+              <h3>Exam Preparation Tips</h3>
               <p>Smart strategies, time management and CBT tips to excel in your exams.</p>
               <div className="button">
                 <button className="left">Preparation tips</button>
