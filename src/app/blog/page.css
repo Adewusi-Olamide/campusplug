@@ -423,6 +423,12 @@
     font-size: 15px;
   }
 
+  .blog-hero-content  p
+  {
+    height: 110px;
+
+  }
+
   .featured-section {
     margin-top: 45px;
     margin-bottom: 70px;

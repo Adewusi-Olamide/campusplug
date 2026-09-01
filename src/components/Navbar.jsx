@@ -1,4 +1,3 @@
-
 'use client'
 import { useState } from 'react'
 import React from 'react'
@@ -17,6 +16,9 @@ const Navbar = () => {
 
   const [search, setSearch] = useState("");
   const [noResults, setNoResults] = useState(false);
+
+  // ADDED
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleSearch = () => {
 
@@ -63,6 +65,18 @@ const Navbar = () => {
         </div>
         </Link>
 
+
+        {/* ADDED: HAMBURGER BUTTON */}
+
+        <button
+          className="menu-toggle"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+
+
         <div className="center">
           <Link href="/" className={pathname === "/" ? "active" : ""}>
             <p>Home</p>
@@ -84,6 +98,7 @@ const Navbar = () => {
             <p>About Us</p>
           </Link>
         </div>
+
 
         <div className="right">
 
@@ -123,6 +138,91 @@ const Navbar = () => {
           <button>Get Started</button>
 
         </div>
+
+
+        {/* ADDED: MOBILE DROPDOWN */}
+
+        {menuOpen && (
+          <div className="mobile-menu">
+
+            <Link
+              href="/"
+              className={pathname === "/" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Home
+            </Link>
+
+            <Link
+              href="/tools"
+              className={pathname === "/tools" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Tools
+            </Link>
+
+            <Link
+              href="/resources"
+              className={pathname === "/resources" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Resources
+            </Link>
+
+            <Link
+              href="/blog"
+              className={pathname === "/blog" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Blog
+            </Link>
+
+            <Link
+              href="/about"
+              className={pathname === "/about" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              About Us
+            </Link>
+
+            {/* Mobile Search */}
+
+            <div className="mobile-search">
+
+              <input
+                type="text"
+                placeholder="Search tools..."
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setNoResults(false);
+                }}
+                onKeyDown={handleKeyDown}
+              />
+
+              <Search
+                size={20}
+                onClick={handleSearch}
+                style={{ cursor: "pointer" }}
+              />
+
+            </div>
+
+            {/* Mobile Moon */}
+
+            <div className="mobile-option">
+              <Moon size={20} />
+              <span>Dark Mode</span>
+            </div>
+
+            {/* Mobile Get Started */}
+
+            <button className="mobile-get-started">
+              Get Started
+            </button>
+
+          </div>
+        )}
 
       </div>
 

@@ -427,3 +427,356 @@ body
     cursor: pointer;
 
 }
+
+/* ========================================= */
+/* RESPONSIVE DESIGN - ADDED ONLY */
+/* ========================================= */
+
+
+/* ========================= */
+/* SMALL LAPTOPS / TABLETS */
+/* ========================= */
+
+@media (max-width: 1000px) {
+
+    .box {
+        padding: 1px 3%;
+    }
+
+    /* HERO */
+
+    .container {
+        gap: 30px;
+    }
+
+    .container .left {
+        width: 60%;
+    }
+
+    .container .left h1 {
+        font-size: 45px;
+    }
+
+    .container .left .content {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .container .left .content button {
+        padding: 9px 14px;
+    }
+
+    .container .right {
+        width: 40%;
+    }
+
+    .container .right .image {
+        width: 100%;
+        height: auto;
+    }
+
+
+    /* RESOURCE CARDS */
+
+    .container-2 .content {
+        gap: 15px;
+    }
+
+    .container-2 .syllabus {
+        padding: 18px;
+    }
+
+}
+
+
+/* ========================= */
+/* TABLETS */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+    .box {
+        padding: 1px 5%;
+    }
+
+
+    /* HERO */
+
+    .container {
+        margin-top: 130px;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .container .left {
+        width: 100%;
+        align-items: center;
+    }
+
+    .container .left h3 {
+        font-size: 14px;
+    }
+
+    .container .left h1 {
+        font-size: 42px;
+    }
+
+    .container .left .displaytext {
+        width: 100%;
+        height: auto;
+    }
+
+    .container .left .content {
+        justify-content: center;
+    }
+
+    .container .right {
+        width: 100%;
+    }
+
+    .container .right .image {
+        width: 60%;
+        height: auto;
+    }
+
+
+    /* RESOURCES */
+
+    .container-2 {
+        margin-top: 70px;
+    }
+
+    .container-2 .content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .container-2 .syllabus {
+        width: auto;
+    }
+
+
+    /* NOTICE */
+
+    .container-3 {
+        padding: 20px;
+    }
+
+    .container-3 .left .notice p {
+        font-size: 14px;
+    }
+
+    .container-3 .left .notice p br {
+        display: none;
+    }
+
+}
+
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
+@media (max-width: 600px) {
+
+    .box {
+        padding: 1px 6%;
+    }
+
+
+    /* HERO */
+
+    .container {
+        margin-top: 100px;
+        gap: 25px;
+    }
+
+    .container .left h1
+    {
+        margin-top: 20px;
+    }
+
+    .container .left h3 {
+        font-size: 12px;
+        padding: 8px;
+        gap: 8px;
+    }
+
+    .container .left h1 {
+        font-size: 34px;
+        line-height: 1.2;
+    }
+
+    .container .left p {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .container .left .displaytext {
+        width: 100%;
+        height: 70px;
+    }
+
+
+    /* CATEGORY BUTTONS */
+
+    .container .left .content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        gap: 10px;
+        margin-top: 30px;
+    }
+
+    .container .left .content button {
+        justify-content: center;
+        width: 100%;
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+
+    /* HERO IMAGE */
+
+    .container .right .image {
+        width: 90%;
+        height: auto;
+    }
+
+
+    /* RESOURCE SECTION */
+
+    .container-2 {
+        margin-top: 60px;
+    }
+
+    .container-2 .head h1 {
+        font-size: 24px;
+    }
+
+    .container-2 .content {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .container-2 .syllabus {
+        width: auto;
+        padding: 20px;
+    }
+
+    .container-2 .syllabus:hover {
+        transform: scale(1.02);
+    }
+
+    .container-2 .syllabus h3 {
+        font-size: 18px;
+    }
+
+    .container-2 .syllabus p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .container-2 .syllabus .button {
+        margin-top: 35px;
+    }
+
+
+    /* NOTICE */
+
+    .container-3 {
+        margin-top: 40px;
+        padding: 18px;
+    }
+
+    .container-3 .left {
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .container-3 .left .alert {
+        flex-shrink: 0;
+    }
+
+    .container-3 .left .alert svg {
+        width: 35px;
+        height: 35px;
+    }
+
+    .container-3 .left .notice h1 {
+        font-size: 20px;
+    }
+
+    .container-3 .left .notice p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .container-3 .right {
+        display: none;
+    }
+
+}
+
+
+/* ========================= */
+/* SMALL PHONES */
+/* ========================= */
+
+@media (max-width: 400px) {
+
+    .box {
+        padding: 1px 5%;
+    }
+
+
+    .container .left h1 {
+        font-size: 29px;
+    }
+
+    .container .left h3 {
+        font-size: 11px;
+    }
+
+    .container .left p {
+        font-size: 14px;
+    }
+
+
+    .container .left .content {
+        gap: 8px;
+    }
+
+    .container .left .content button {
+        font-size: 11px;
+        padding: 9px 5px;
+    }
+
+
+    .container .right .image {
+        width: 100%;
+    }
+
+
+    .container-2 .head h1 {
+        font-size: 22px;
+    }
+
+
+    .container-2 .syllabus {
+        padding: 17px;
+    }
+
+
+    .container-3 .left .notice h1 {
+        font-size: 18px;
+    }
+
+    .container-3 .left .notice p {
+        font-size: 12px;
+    }
+
+}
