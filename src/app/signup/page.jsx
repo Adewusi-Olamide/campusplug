@@ -5,8 +5,10 @@ import Link from 'next/link'
 import { Eye, EyeOff, GraduationCap, Mail, Lock, User } from 'lucide-react'
 import { FaGoogle, FaGithub } from 'react-icons/fa'
 import './page.css'
+export const dynamic = 'force-dynamic';
 
 const page = () => {
+
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
