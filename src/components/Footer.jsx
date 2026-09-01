@@ -24,7 +24,7 @@ const Footer = () => {
 
             <p id="p">Your all-in-one study companion</p>
 
-            <p id="p">© {new Date().getFullYear()} CampusPlug. All right reserved</p>
+            <p id="p">© {new Date().getFullYear()} CampusPlug. All rights reserved</p>
 
           </div>
 

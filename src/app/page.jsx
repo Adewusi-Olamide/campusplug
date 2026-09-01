@@ -138,7 +138,7 @@ const page = () => {
               <button>Get  Started Free →</button>
 
               <div className="content">
-                <p><Check className="check" size={15} />Free Forver</p>
+                <p><Check className="check" size={15} />Free Forever</p>
                 <p><Check className="check" size={15} />No Credit Card</p>
                 <p><Check className="check" size={15} />Easy To Use</p>
               </div>
