@@ -35,11 +35,6 @@ const Page = () => {
       return
     }
 
-    if (!/(?=.*\d)(?=.*[!@#$%^&*])/.test(password)){
-      setError(' Password is not strong enough, it must contain atleast one number and one symbol ')
-      return
-    }
-
     setLoading(true)
 
     const { data, error } = await supabase.auth.signUp({
@@ -61,7 +56,7 @@ const Page = () => {
 
     // If email confirmation is required, session will be null
     if (data?.user && !data?.session) {
-      router.push('/verify-email')
+      router.push('/signin')
     } else {
       router.push('/dashboard')
     }

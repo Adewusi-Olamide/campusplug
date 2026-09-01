@@ -49,6 +49,9 @@ const Navbar = () => {
     else if (query === "signin" || query === "sign in") {
       router.push("/signin");
     }
+    else if (query === "dashboard" || query === "my profile") {
+      router.push("/dashboard");
+    }
     else {
       setNoResults(true);
     }

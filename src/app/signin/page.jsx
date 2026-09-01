@@ -27,10 +27,17 @@ const page = () => {
       password,
     })
 
+    setLoading(false)
+
     if (error) {
-      setError(error.message)
-      setLoading(false)
-      return
+        if
+        (error.message.toLocaleLowerCase().includes('email not confirmed'))
+        {
+            setError('Please check your inbox and verify your email before you sign in.')
+        } else{
+            setError(error.message)
+        }
+        return
     }
 
     router.push('/dashboard')
