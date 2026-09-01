@@ -135,7 +135,9 @@ const Navbar = () => {
             <Moon size={20} />
           </p>
 
+          <Link href="signup">
           <button>Get Started</button>
+          </Link>
 
         </div>
 
@@ -217,9 +219,9 @@ const Navbar = () => {
 
             {/* Mobile Get Started */}
 
-            <button className="mobile-get-started">
-              Get Started
-            </button>
+            <Link href="signup">
+            <button className="mobile-get-started">Get Started</button>
+            </Link>
 
           </div>
         )}
