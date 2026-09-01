@@ -17,7 +17,6 @@ const Page = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -87,7 +86,7 @@ const Page = () => {
         {/* Left Side */}
         <div className="signup-info">
           <div className="signup-logo">
-            <GraduationCap size={30} />
+            <GraduationCap size={45} />
             <span>CampusPlug</span>
           </div>
 

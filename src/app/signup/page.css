@@ -67,6 +67,7 @@ body
   font-weight: 700;
   position: relative;
   z-index: 2;
+  font-size: 25px;
 }
 
 .signup-info-content {
