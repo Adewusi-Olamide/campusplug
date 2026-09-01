@@ -50,7 +50,7 @@ const page = () => {
 
             <div className="buttons">
               <Link href="/signup"><button className='get-started'>Get Started Free →</button></Link>
-              <Link href="/resources"><button className='explore'>Explore Resources</button></Link>
+              <Link href="/signin"><button className='explore'>Sign In</button></Link>
             </div>
 
           </div>

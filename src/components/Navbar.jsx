@@ -46,6 +46,9 @@ const Navbar = () => {
     else if (query === "signup" || query === "sign up") {
       router.push("/signup");
     }
+    else if (query === "signin" || query === "sign in") {
+      router.push("/signin");
+    }
     else {
       setNoResults(true);
     }

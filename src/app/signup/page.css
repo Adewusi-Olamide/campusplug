@@ -46,6 +46,21 @@ body
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
 }
 
+/* PASSWORD ERROR */
+.password-error
+{
+  color: red;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(255, 0, 0, 0.144);
+}
+
 
 /* LEFT SIDE */
 
@@ -213,6 +228,7 @@ body
 
 .input-group {
   display: flex;
+  margin-top: 10px;
   flex-direction: column;
   gap: 7px;
 }

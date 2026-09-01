@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff, GraduationCap, Mail, Lock, User } from 'lucide-react'
 import { FaGoogle, FaGithub } from 'react-icons/fa'
+import { CircleAlert } from 'lucide-react'
 import './page.css'
 
 const Page = () => {
@@ -31,6 +32,11 @@ const Page = () => {
 
     if (password.length < 6) {
       setError('Password must be at least 6 characters')
+      return
+    }
+
+    if (!/(?=.*\d)(?=.*[!@#$%^&*])/.test(password)){
+      setError(' Password is not strong enough, it must contain atleast one number and one symbol ')
       return
     }
 
@@ -137,7 +143,7 @@ const Page = () => {
             </div>
 
             {error && (
-              <p style={{ color: 'red', marginBottom: '1rem' }}>{error}</p>
+              <p className="password-error"><CircleAlert size={30} />{error}</p>
             )}
 
             {/* Form */}
