@@ -52,7 +52,7 @@ body
 .signup-info {
   position: relative;
   overflow: hidden;
-  background: #0f766e;
+  background: var(--purple);
   color: white;
   padding: 45px;
   display: flex;
@@ -77,7 +77,8 @@ body
 }
 
 .signup-info-content h1 {
-  font-size: 44px;
+  font-size: 45px;
+  font-weight: bold;
   line-height: 1.15;
   margin: 0 0 20px;
   letter-spacing: -1.5px;
@@ -86,7 +87,7 @@ body
 .signup-info-content p {
   max-width: 390px;
   line-height: 1.7;
-  font-size: 15px;
+  font-size: 16px;
   opacity: 0.9;
 }
 
@@ -131,14 +132,15 @@ body
 
 .signup-heading h2 {
   margin: 0 0 8px;
-  font-size: 30px;
+  font-size: 35px;
+  font-weight: bold;
   color: #111827;
 }
 
 .signup-heading p {
   margin: 0;
   color: #6b7280;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 
@@ -237,7 +239,7 @@ body
 }
 
 .input-wrapper:focus-within {
-  border-color: #0f766e;
+  border-color: var(--purple);
   box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.08);
 }
 
@@ -278,11 +280,11 @@ body
 
 .terms input {
   margin-top: 3px;
-  accent-color: #0f766e;
+  accent-color: var(--purple);
 }
 
 .terms a {
-  color: #0f766e;
+  color: var(--purple);
   text-decoration: none;
   font-weight: 600;
 }
@@ -292,19 +294,22 @@ body
 
 .signup-submit {
   height: 48px;
-  border: none;
+  border: 2px solid  transparent;
   border-radius: 8px;
-  background: #0f766e;
+  background: var(--purple);
   color: white;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.5s ease;
 }
 
 .signup-submit:hover {
-  background: #0b625c;
+  transition: 0.5s ease;
+  border: 2px solid  var(--purple);
+  background-color: white;
   transform: translateY(-1px);
+  color: var(--purple);
 }
 
 
@@ -318,7 +323,7 @@ body
 }
 
 .signin-text a {
-  color: #0f766e;
+  color: var(--purple);
   font-weight: 700;
   text-decoration: none;
 }

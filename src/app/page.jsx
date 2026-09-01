@@ -49,8 +49,8 @@ const page = () => {
             <p className="displaytext1">{displayText}</p>
 
             <div className="buttons">
-              <button className='get-started'>Get Started Free →</button>
-              <button className='explore'>Explore Features</button>
+              <Link href="/signup"><button className='get-started'>Get Started Free →</button></Link>
+              <Link href="/resources"><button className='explore'>Explore Resources</button></Link>
             </div>
 
           </div>
@@ -135,7 +135,7 @@ const page = () => {
             </div>
 
             <div  className="center">
-              <button>Get  Started Free →</button>
+              <Link href="/signup"><button>Get  Started Free →</button></Link>
 
               <div className="content">
                 <p><Check className="check" size={15} />Free Forever</p>
