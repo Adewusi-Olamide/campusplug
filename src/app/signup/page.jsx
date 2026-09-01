@@ -2,19 +2,86 @@
 import { supabase } from '@/lib/supabase'
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Eye, EyeOff, GraduationCap, Mail, Lock, User } from 'lucide-react'
 import { FaGoogle, FaGithub } from 'react-icons/fa'
 import './page.css'
-export const dynamic = 'force-dynamic';
 
-const page = () => {
+const Page = () => {
+  const router = useRouter()
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match')
+      return
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters')
+      return
+    }
+
+    setLoading(true)
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+        },
+      },
+    })
+
+    setLoading(false)
+
+    if (error) {
+      setError(error.message)
+      return
+    }
+
+    // If email confirmation is required, session will be null
+    if (data?.user && !data?.session) {
+      router.push('/verify-email')
+    } else {
+      router.push('/dashboard')
+    }
+  }
+
+  const handleGoogleSignup = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+  }
+
+  const handleGithubSignup = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+  }
+
   return (
     <div className="signup-page">
-
       <div className="signup-container">
 
         {/* Left Side */}
@@ -36,10 +103,8 @@ const page = () => {
           <div className="signup-shape shape-two"></div>
         </div>
 
-
         {/* Right Side */}
         <div className="signup-form-section">
-
           <div className="signup-form-wrapper">
 
             <div className="signup-heading">
@@ -47,68 +112,77 @@ const page = () => {
               <p>Join CampusPlug and start learning smarter.</p>
             </div>
 
-
             {/* Social Signup */}
             <div className="social-buttons">
-
-              <button className="social-btn google-btn">
+              <button
+                type="button"
+                className="social-btn google-btn"
+                onClick={handleGoogleSignup}
+              >
                 <FaGoogle />
                 Continue with Google
               </button>
 
-              <button className="social-btn github-btn">
+              <button
+                type="button"
+                className="social-btn github-btn"
+                onClick={handleGithubSignup}
+              >
                 <FaGithub />
                 Continue with GitHub
               </button>
-
             </div>
-
 
             <div className="divider">
               <span>or continue with email</span>
             </div>
 
+            {error && (
+              <p style={{ color: 'red', marginBottom: '1rem' }}>{error}</p>
+            )}
 
             {/* Form */}
-            <form className="signup-form">
+            <form className="signup-form" onSubmit={handleSubmit}>
 
               <div className="input-group">
                 <label>Full name</label>
-
                 <div className="input-wrapper">
                   <User size={18} />
                   <input
                     type="text"
                     placeholder="Enter your full name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
                   />
                 </div>
               </div>
 
-
               <div className="input-group">
                 <label>Email address</label>
-
                 <div className="input-wrapper">
                   <Mail size={18} />
                   <input
                     type="email"
                     placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
               </div>
 
-
               <div className="input-group">
                 <label>Password</label>
-
                 <div className="input-wrapper">
                   <Lock size={18} />
-
                   <input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Create a password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
-
                   <button
                     type="button"
                     className="password-toggle"
@@ -119,18 +193,17 @@ const page = () => {
                 </div>
               </div>
 
-
               <div className="input-group">
                 <label>Confirm password</label>
-
                 <div className="input-wrapper">
                   <Lock size={18} />
-
                   <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="Confirm your password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
                   />
-
                   <button
                     type="button"
                     className="password-toggle"
@@ -138,30 +211,24 @@ const page = () => {
                       setShowConfirmPassword(!showConfirmPassword)
                     }
                   >
-                    {showConfirmPassword
-                      ? <EyeOff size={18} />
-                      : <Eye size={18} />
-                    }
+                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
               </div>
 
-
               <div className="terms">
-                <input type="checkbox" id="terms" />
+                <input type="checkbox" id="terms" required />
                 <label htmlFor="terms">
                   I agree to the <Link href="#">Terms of Service</Link> and{' '}
                   <Link href="#">Privacy Policy</Link>
                 </label>
               </div>
 
-
-              <button type="submit" className="signup-submit">
-                Create Account
+              <button type="submit" className="signup-submit" disabled={loading}>
+                {loading ? 'Creating account...' : 'Create Account'}
               </button>
 
             </form>
-
 
             <p className="signin-text">
               Already have an account?{' '}
@@ -169,13 +236,11 @@ const page = () => {
             </p>
 
           </div>
-
         </div>
 
       </div>
-
     </div>
   )
 }
 
-export default page
+export default Page
