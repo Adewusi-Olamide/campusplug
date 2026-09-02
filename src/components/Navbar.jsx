@@ -49,7 +49,7 @@ const Navbar = () => {
     else if (query === "signin" || query === "sign in") {
       router.push("/signin");
     }
-    else if (query === "dashboard" || query === "my profile") {
+    else if (query === "dashboard" || query === "dashboard") {
       router.push("/dashboard");
     }
     else if (query === "calculator" || query === "calculator") {
@@ -57,6 +57,9 @@ const Navbar = () => {
     }
     else if (query === "cbt" || query === "cbt exam") {
       router.push("/cbt");
+    }
+    else if (query === "profile" || query === "my profile") {
+      router.push("/profile");
     }
     else {
       setNoResults(true);
@@ -91,9 +94,11 @@ const Navbar = () => {
           ☰
         </button>
 
+        <Link href="/profile">
         <div className="mobile-option">
           <User size={20} />
         </div>
+        </Link>
 
 
         <div className="center">
@@ -150,11 +155,13 @@ const Navbar = () => {
             </p>
           )}
 
+          <Link href="/profile">
           <p className="user">
             <User size={20} />
           </p>
 
-          <Link href="signup">
+
+</Link>          <Link href="signup">
           <button>Get Started</button>
           </Link>
 
