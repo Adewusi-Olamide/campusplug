@@ -52,6 +52,9 @@ const Navbar = () => {
     else if (query === "dashboard" || query === "my profile") {
       router.push("/dashboard");
     }
+    else if (query === "calculator" || query === "calculator") {
+      router.push("/calculator");
+    }
     else {
       setNoResults(true);
     }
