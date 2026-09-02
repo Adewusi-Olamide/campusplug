@@ -78,11 +78,13 @@ const page = () => {
               <p>Organize tasks, set goals, and track your daily progress.</p>
             </div>
 
+            <Link href="/calculator">
             <div className="d">
               <p className='calculator'><Calculator size={25} /></p>
               <h2>GPA Calculator</h2>
               <p>Calculate your GPA and track academic performance.</p>
             </div>
+            </Link>
 
             <div className="d">
               <p className='calendar'><Calendar size={25} /></p>

@@ -55,6 +55,9 @@ const Navbar = () => {
     else if (query === "calculator" || query === "calculator") {
       router.push("/calculator");
     }
+    else if (query === "cbt" || query === "cbt exam") {
+      router.push("/cbt");
+    }
     else {
       setNoResults(true);
     }
