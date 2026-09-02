@@ -5,7 +5,7 @@ import Link from 'next/link'
 import './Navbar.css'
 import { usePathname, useRouter } from 'next/navigation'
 import { Search } from 'lucide-react'
-import { Moon } from 'lucide-react'
+import { User } from 'lucide-react'
 import { GraduationCapIcon } from 'lucide-react'
 import { CircleAlert } from 'lucide-react'
 
@@ -91,6 +91,10 @@ const Navbar = () => {
           ☰
         </button>
 
+        <div className="mobile-option">
+          <User size={20} />
+        </div>
+
 
         <div className="center">
           <Link href="/" className={pathname === "/" ? "active" : ""}>
@@ -146,8 +150,8 @@ const Navbar = () => {
             </p>
           )}
 
-          <p>
-            <Moon size={20} />
+          <p className="user">
+            <User size={20} />
           </p>
 
           <Link href="signup">
@@ -223,13 +227,6 @@ const Navbar = () => {
                 style={{ cursor: "pointer" }}
               />
 
-            </div>
-
-            {/* Mobile Moon */}
-
-            <div className="mobile-option">
-              <Moon size={20} />
-              <span>Dark Mode</span>
             </div>
 
             {/* Mobile Get Started */}
