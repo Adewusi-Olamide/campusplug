@@ -73,7 +73,7 @@ const Navbar = () => {
 
         <Link href="/">
         <div className="left">
-          <h1><GraduationCapIcon id="logo" size={50} />Campus<span className="campusplug">Plug</span></h1>
+          <h1><GraduationCapIcon id="logo" size={50} /><span className="campusplug">CampusPlug</span></h1>
         </div>
         </Link>
 
