@@ -796,3 +796,199 @@ body
     padding: 13px;
   }
 }
+
+/* =========================
+   Live Study Timer
+   ========================= */
+
+.timer-section {
+  max-width: 1150px;
+  margin: 0 auto 28px;
+}
+
+.timer-card {
+  position: relative;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 12px 35px rgba(16, 20, 56, 0.06);
+}
+
+.timer-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #5532e9;
+}
+
+.timer-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  text-align: left;
+}
+
+.timer-heading h2 {
+  margin: 7px 0 5px;
+  color: #111827;
+  font-size: 22px;
+}
+
+.timer-heading p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.timer-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border-radius: 20px;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.timer-status span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #9ca3af;
+}
+
+.timer-status.active {
+  background: #f0edff;
+  color: #5532e9;
+}
+
+.timer-status.active span {
+  background: #5532e9;
+  box-shadow: 0 0 0 4px rgba(85, 50, 233, 0.12);
+}
+
+.timer-display {
+  margin: 25px 0 20px;
+  color: #101438;
+  font-size: clamp(62px, 11vw, 105px);
+  line-height: 1;
+  letter-spacing: 3px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-presets {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.timer-presets button {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #374151;
+  border-radius: 9px;
+  padding: 9px 13px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.timer-presets button:hover,
+.timer-presets button.selected {
+  border-color: #5532e9;
+  background: #f6f3ff;
+  color: #5532e9;
+}
+
+.timer-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.timer-main-btn,
+.timer-adjust,
+.timer-reset-btn {
+  border-radius: 9px;
+  padding: 11px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.timer-main-btn {
+  min-width: 125px;
+  border: none;
+  background: #5532e9;
+  color: white;
+}
+
+.timer-main-btn:hover {
+  background: #4320d0;
+  transform: translateY(-1px);
+}
+
+.timer-adjust,
+.timer-reset-btn {
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #374151;
+}
+
+.timer-adjust:hover,
+.timer-reset-btn:hover {
+  border-color: #5532e9;
+  color: #5532e9;
+}
+
+.timer-adjust:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .timer-card {
+    padding: 22px 16px;
+  }
+
+  .timer-heading {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .timer-display {
+    margin: 30px 0 22px;
+  }
+
+  .timer-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .timer-main-btn {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    width: 100%;
+  }
+
+  .timer-adjust,
+  .timer-reset-btn {
+    width: 100%;
+  }
+}
