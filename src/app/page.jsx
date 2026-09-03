@@ -127,12 +127,14 @@ const page = () => {
               </div>
               </Link>
 
+              <Link href="/focus">
               <div className="tools">
                 <p className="focus"><Target size={25} /></p>
                 <h1>Focus Mode</h1>
                 <p>Eliminate distractions and stay in flow.</p>
                 <button>Open Tool →</button>
               </div>
+              </Link>
           </div>
 
         </div>

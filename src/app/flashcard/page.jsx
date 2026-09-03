@@ -11,15 +11,20 @@ import {
   X,
   BookOpen,
 } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 import './page.css'
 
 const page = () => {
+  const supabase = createClient()
+
   const [decks, setDecks] = useState([])
   const [selectedDeck, setSelectedDeck] = useState(null)
   const [currentCard, setCurrentCard] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [search, setSearch] = useState('')
   const [showCreate, setShowCreate] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
 
   const [deckName, setDeckName] = useState('')
   const [subject, setSubject] = useState('')
@@ -28,16 +33,66 @@ const page = () => {
   const [newCards, setNewCards] = useState([])
 
   useEffect(() => {
-    const savedDecks = localStorage.getItem('campusplug-flashcards')
+    const loadDecks = async () => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
 
-    if (savedDecks) {
-      setDecks(JSON.parse(savedDecks))
+        if (!user) {
+          setLoading(false)
+          return
+        }
+
+        const { data: deckData, error: deckError } = await supabase
+          .from('flashcard_decks')
+          .select('id, name, subject, created_at')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+
+        if (deckError) throw deckError
+
+        const deckIds = (deckData || []).map((deck) => deck.id)
+
+        let cardData = []
+
+        if (deckIds.length > 0) {
+          const { data, error: cardError } = await supabase
+            .from('flashcards')
+            .select('id, deck_id, question, answer, created_at')
+            .in('deck_id', deckIds)
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: true })
+
+          if (cardError) throw cardError
+
+          cardData = data || []
+        }
+
+        const formattedDecks = (deckData || []).map((deck) => ({
+          id: deck.id,
+          name: deck.name,
+          subject: deck.subject,
+          cards: cardData
+            .filter((card) => card.deck_id === deck.id)
+            .map((card) => ({
+              id: card.id,
+              question: card.question,
+              answer: card.answer,
+            })),
+        }))
+
+        setDecks(formattedDecks)
+      } catch (error) {
+        console.error('Failed to load flashcards:', error?.message)
+        console.error('Load error details:', error)
+      } finally {
+        setLoading(false)
+      }
     }
-  }, [])
 
-  useEffect(() => {
-    localStorage.setItem('campusplug-flashcards', JSON.stringify(decks))
-  }, [decks])
+    loadDecks()
+  }, [])
 
   const addCard = () => {
     if (!question.trim() || !answer.trim()) return
@@ -54,23 +109,72 @@ const page = () => {
     setAnswer('')
   }
 
-  const createDeck = () => {
+  const createDeck = async () => {
     if (!deckName.trim() || !subject.trim() || newCards.length === 0) return
 
-    const newDeck = {
-      id: Date.now(),
-      name: deckName.trim(),
-      subject: subject.trim(),
-      cards: newCards,
-    }
+    setSaving(true)
 
-    setDecks([...decks, newDeck])
-    setDeckName('')
-    setSubject('')
-    setQuestion('')
-    setAnswer('')
-    setNewCards([])
-    setShowCreate(false)
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+        console.error('You must be signed in to create a deck.')
+        return
+      }
+
+      const { data: deck, error: deckError } = await supabase
+        .from('flashcard_decks')
+        .insert({
+          user_id: user.id,
+          name: deckName.trim(),
+          subject: subject.trim(),
+        })
+        .select()
+        .single()
+
+      if (deckError) throw deckError
+
+      const cardsToInsert = newCards.map((card) => ({
+        deck_id: deck.id,
+        user_id: user.id,
+        question: card.question,
+        answer: card.answer,
+      }))
+
+      const { data: savedCards, error: cardError } = await supabase
+        .from('flashcards')
+        .insert(cardsToInsert)
+        .select()
+
+      if (cardError) throw cardError
+
+      const newDeck = {
+        id: deck.id,
+        name: deck.name,
+        subject: deck.subject,
+        cards: (savedCards || []).map((card) => ({
+          id: card.id,
+          question: card.question,
+          answer: card.answer,
+        })),
+      }
+
+      setDecks((prev) => [newDeck, ...prev])
+
+      setDeckName('')
+      setSubject('')
+      setQuestion('')
+      setAnswer('')
+      setNewCards([])
+      setShowCreate(false)
+    } catch (error) {
+      console.error('Failed to save flashcard deck:', error?.message)
+      console.error('Save error details:', error)
+    } finally {
+      setSaving(false)
+    }
   }
 
   const openDeck = (deck) => {
@@ -105,13 +209,32 @@ const page = () => {
     )
   }
 
-  const deleteDeck = (id) => {
-    const updatedDecks = decks.filter((deck) => deck.id !== id)
+  const deleteDeck = async (id) => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
 
-    setDecks(updatedDecks)
+      if (!user) return
 
-    if (selectedDeck?.id === id) {
-      closeDeck()
+      const { error } = await supabase
+        .from('flashcard_decks')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id)
+
+      if (error) throw error
+
+      const updatedDecks = decks.filter((deck) => deck.id !== id)
+
+      setDecks(updatedDecks)
+
+      if (selectedDeck?.id === id) {
+        closeDeck()
+      }
+    } catch (error) {
+      console.error('Failed to delete deck:', error?.message)
+      console.error('Delete error details:', error)
     }
   }
 
@@ -120,6 +243,20 @@ const page = () => {
       deck.name.toLowerCase().includes(search.toLowerCase()) ||
       deck.subject.toLowerCase().includes(search.toLowerCase())
   )
+
+  if (loading) {
+    return (
+      <main className="flashcards-page">
+        <div className="empty-state">
+          <div className="empty-icon">
+            <BookOpen size={32} />
+          </div>
+          <h2>Loading flashcards...</h2>
+          <p>Your saved decks are being loaded.</p>
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className="flashcards-page">
@@ -364,9 +501,14 @@ const page = () => {
             <button
               className="save-deck-btn"
               onClick={createDeck}
-              disabled={!deckName.trim() || !subject.trim() || newCards.length === 0}
+              disabled={
+                saving ||
+                !deckName.trim() ||
+                !subject.trim() ||
+                newCards.length === 0
+              }
             >
-              Save Deck
+              {saving ? 'Saving...' : 'Save Deck'}
             </button>
 
           </div>

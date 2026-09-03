@@ -8,13 +8,15 @@ import {
   PinOff,
   Pencil,
   Trash2,
-  X,
   FileText,
   ArrowLeft,
 } from 'lucide-react'
 import './page.css'
+import { createClient } from '@/lib/supabase/client'
 
 const page = () => {
+  const supabase = createClient()
+
   const [notes, setNotes] = useState([])
   const [search, setSearch] = useState('')
   const [subjectFilter, setSubjectFilter] = useState('All')
@@ -25,17 +27,53 @@ const page = () => {
   const [content, setContent] = useState('')
   const [editingId, setEditingId] = useState(null)
 
-  useEffect(() => {
-    const savedNotes = localStorage.getItem('campusplug-notes')
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
 
-    if (savedNotes) {
-      setNotes(JSON.parse(savedNotes))
+  // Load the logged-in student's notes
+  useEffect(() => {
+    const loadNotes = async () => {
+      setLoading(true)
+
+      try {
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser()
+
+        if (userError) {
+          throw userError
+        }
+
+        if (!user) {
+          console.error('No logged-in user found.')
+          setNotes([])
+          return
+        }
+
+        const { data, error } = await supabase
+          .from('notes')
+          .select(
+            'id, title, subject, content, pinned, created_at, updated_at'
+          )
+          .eq('user_id', user.id)
+          .order('updated_at', { ascending: false })
+
+        if (error) {
+          throw error
+        }
+
+        setNotes(data || [])
+      } catch (error) {
+        console.error('Failed to load notes:', error?.message)
+        console.error('Load error details:', error)
+      } finally {
+        setLoading(false)
+      }
     }
-  }, [])
 
-  useEffect(() => {
-    localStorage.setItem('campusplug-notes', JSON.stringify(notes))
-  }, [notes])
+    loadNotes()
+  }, [])
 
   const openNewNote = () => {
     setTitle('')
@@ -47,7 +85,7 @@ const page = () => {
 
   const openEditNote = (note) => {
     setTitle(note.title)
-    setSubject(note.subject)
+    setSubject(note.subject || '')
     setContent(note.content)
     setEditingId(note.id)
     setShowEditor(true)
@@ -61,67 +99,170 @@ const page = () => {
     setShowEditor(false)
   }
 
-  const saveNote = () => {
-    if (!title.trim() || !content.trim()) return
+  const saveNote = async () => {
+    if (!title.trim() || !content.trim() || saving) return
 
-    if (editingId) {
-      setNotes(
-        notes.map((note) =>
-          note.id === editingId
-            ? {
-                ...note,
-                title: title.trim(),
-                subject: subject.trim() || 'General',
-                content: content.trim(),
-                updatedAt: new Date().toISOString(),
-              }
-            : note
-        )
-      )
-    } else {
-      const newNote = {
-        id: Date.now(),
-        title: title.trim(),
-        subject: subject.trim() || 'General',
-        content: content.trim(),
-        pinned: false,
-        updatedAt: new Date().toISOString(),
+    setSaving(true)
+
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser()
+
+      if (userError) {
+        throw userError
       }
 
-      setNotes([newNote, ...notes])
+      if (!user) {
+        console.error('No logged-in user found.')
+        return
+      }
+
+      if (editingId) {
+        const { data, error } = await supabase
+          .from('notes')
+          .update({
+            title: title.trim(),
+            subject: subject.trim() || 'General',
+            content: content.trim(),
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', editingId)
+          .eq('user_id', user.id)
+          .select()
+          .single()
+
+        if (error) {
+          throw error
+        }
+
+        setNotes((currentNotes) =>
+          currentNotes.map((note) =>
+            note.id === editingId ? data : note
+          )
+        )
+      } else {
+        const { data, error } = await supabase
+          .from('notes')
+          .insert({
+            user_id: user.id,
+            title: title.trim(),
+            subject: subject.trim() || 'General',
+            content: content.trim(),
+            pinned: false,
+          })
+          .select()
+          .single()
+
+        if (error) {
+          throw error
+        }
+
+        setNotes((currentNotes) => [data, ...currentNotes])
+      }
+
+      closeEditor()
+    } catch (error) {
+      console.error('Failed to save note:', error?.message)
+      console.error('Save error   details:', error)
+    } finally {
+      setSaving(false)
     }
-
-    closeEditor()
   }
 
-  const deleteNote = (id) => {
-    setNotes(notes.filter((note) => note.id !== id))
+  const deleteNote = async (id) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) return
+
+    const previousNotes = notes
+
+    setNotes((currentNotes) =>
+      currentNotes.filter((note) => note.id !== id)
+    )
+
+    const { error } = await supabase
+      .from('notes')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id)
+
+    if (error) {
+      console.error('Failed to delete note:', error)
+      setNotes(previousNotes)
+    }
   }
 
-  const togglePin = (id) => {
-    setNotes(
-      notes.map((note) =>
-        note.id === id
-          ? { ...note, pinned: !note.pinned }
-          : note
+  const togglePin = async (id) => {
+    const note = notes.find((item) => item.id === id)
+
+    if (!note) return
+
+    const newPinnedState = !note.pinned
+
+    setNotes((currentNotes) =>
+      currentNotes.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              pinned: newPinnedState,
+            }
+          : item
       )
     )
+
+    const { error } = await supabase
+      .from('notes')
+      .update({
+        pinned: newPinnedState,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+
+    if (error) {
+      console.error('Failed to update pin:', error)
+
+      setNotes((currentNotes) =>
+        currentNotes.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                pinned: note.pinned,
+              }
+            : item
+        )
+      )
+    }
   }
 
   const subjects = [
     'All',
-    ...new Set(notes.map((note) => note.subject).filter(Boolean)),
+    ...new Set(
+      notes
+        .map((note) => note.subject)
+        .filter(Boolean)
+    ),
   ]
 
   const filteredNotes = notes
     .filter((note) => {
       const matchesSearch =
-        note.title.toLowerCase().includes(search.toLowerCase()) ||
-        note.content.toLowerCase().includes(search.toLowerCase()) ||
-        note.subject.toLowerCase().includes(search.toLowerCase())
+        note.title
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        note.content
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        (note.subject || '')
+          .toLowerCase()
+          .includes(search.toLowerCase())
 
       const matchesSubject =
-        subjectFilter === 'All' || note.subject === subjectFilter
+        subjectFilter === 'All' ||
+        note.subject === subjectFilter
 
       return matchesSearch && matchesSubject
     })
@@ -130,7 +271,10 @@ const page = () => {
         return a.pinned ? -1 : 1
       }
 
-      return new Date(b.updatedAt) - new Date(a.updatedAt)
+      return (
+        new Date(b.updated_at) -
+        new Date(a.updated_at)
+      )
     })
 
   const getWordCount = (text) => {
@@ -154,10 +298,15 @@ const page = () => {
           <section className="notes-header">
             <div>
               <h1>My Notes</h1>
-              <p>Keep your class notes organized and easy to find.</p>
+              <p>
+                Keep your class notes organized and easy to find.
+              </p>
             </div>
 
-            <button className="new-note-btn" onClick={openNewNote}>
+            <button
+              className="new-note-btn"
+              onClick={openNewNote}
+            >
               <Plus size={19} />
               New Note
             </button>
@@ -166,6 +315,7 @@ const page = () => {
           <section className="notes-toolbar">
             <div className="notes-search">
               <Search size={19} />
+
               <input
                 type="text"
                 placeholder="Search your notes..."
@@ -178,8 +328,14 @@ const page = () => {
               {subjects.map((subject) => (
                 <button
                   key={subject}
-                  className={subjectFilter === subject ? 'active' : ''}
-                  onClick={() => setSubjectFilter(subject)}
+                  className={
+                    subjectFilter === subject
+                      ? 'active'
+                      : ''
+                  }
+                  onClick={() =>
+                    setSubjectFilter(subject)
+                  }
                 >
                   {subject}
                 </button>
@@ -187,7 +343,19 @@ const page = () => {
             </div>
           </section>
 
-          {filteredNotes.length === 0 ? (
+          {loading ? (
+            <div className="notes-empty">
+              <div className="empty-icon">
+                <FileText size={32} />
+              </div>
+
+              <h2>Loading your notes...</h2>
+
+              <p>
+                Getting your saved notes.
+              </p>
+            </div>
+          ) : filteredNotes.length === 0 ? (
             <div className="notes-empty">
               <div className="empty-icon">
                 <FileText size={32} />
@@ -218,7 +386,10 @@ const page = () => {
           ) : (
             <section className="notes-grid">
               {filteredNotes.map((note) => (
-                <article className="note-card" key={note.id}>
+                <article
+                  className="note-card"
+                  key={note.id}
+                >
 
                   <div className="note-card-top">
                     <span className="note-subject">
@@ -229,9 +400,13 @@ const page = () => {
                       className={`pin-btn ${
                         note.pinned ? 'pinned' : ''
                       }`}
-                      onClick={() => togglePin(note.id)}
+                      onClick={() =>
+                        togglePin(note.id)
+                      }
                       aria-label={
-                        note.pinned ? 'Unpin note' : 'Pin note'
+                        note.pinned
+                          ? 'Unpin note'
+                          : 'Pin note'
                       }
                     >
                       {note.pinned ? (
@@ -251,12 +426,14 @@ const page = () => {
                   <div className="note-card-bottom">
                     <span>
                       {getWordCount(note.content)} words ·{' '}
-                      {formatDate(note.updatedAt)}
+                      {formatDate(note.updated_at)}
                     </span>
 
                     <div className="note-actions">
                       <button
-                        onClick={() => openEditNote(note)}
+                        onClick={() =>
+                          openEditNote(note)
+                        }
                         aria-label="Edit note"
                       >
                         <Pencil size={16} />
@@ -264,7 +441,9 @@ const page = () => {
 
                       <button
                         className="delete-note"
-                        onClick={() => deleteNote(note.id)}
+                        onClick={() =>
+                          deleteNote(note.id)
+                        }
                         aria-label="Delete note"
                       >
                         <Trash2 size={16} />
@@ -280,7 +459,10 @@ const page = () => {
       ) : (
         <section className="note-editor-page">
 
-          <button className="back-notes-btn" onClick={closeEditor}>
+          <button
+            className="back-notes-btn"
+            onClick={closeEditor}
+          >
             <ArrowLeft size={19} />
             Back to Notes
           </button>
@@ -288,8 +470,11 @@ const page = () => {
           <div className="editor-header">
             <div>
               <h1>
-                {editingId ? 'Edit Note' : 'Create Note'}
+                {editingId
+                  ? 'Edit Note'
+                  : 'Create Note'}
               </h1>
+
               <p>
                 {editingId
                   ? 'Update your study note.'
@@ -301,53 +486,83 @@ const page = () => {
           <div className="note-editor-card">
 
             <div className="editor-input">
-              <label htmlFor="note-title">Title</label>
+              <label htmlFor="note-title">
+                Title
+              </label>
+
               <input
                 id="note-title"
                 type="text"
                 placeholder="e.g. Newton's Laws of Motion"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) =>
+                  setTitle(e.target.value)
+                }
               />
             </div>
 
             <div className="editor-input">
-              <label htmlFor="note-subject">Subject</label>
+              <label htmlFor="note-subject">
+                Subject
+              </label>
+
               <input
                 id="note-subject"
                 type="text"
                 placeholder="e.g. Physics"
                 value={subject}
-                onChange={(e) => setSubject(e.target.value)}
+                onChange={(e) =>
+                  setSubject(e.target.value)
+                }
               />
             </div>
 
             <div className="editor-input content-input">
               <div className="content-label">
-                <label htmlFor="note-content">Your Note</label>
-                <span>{getWordCount(content)} words</span>
+                <label htmlFor="note-content">
+                  Your Note
+                </label>
+
+                <span>
+                  {getWordCount(content)} words
+                </span>
               </div>
 
               <textarea
                 id="note-content"
                 placeholder="Start writing your notes..."
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={(e) =>
+                  setContent(e.target.value)
+                }
               />
             </div>
 
             <div className="editor-actions">
-              <button className="cancel-btn" onClick={closeEditor}>
+
+              <button
+                className="cancel-btn"
+                onClick={closeEditor}
+              >
                 Cancel
               </button>
 
               <button
                 className="save-note-btn"
                 onClick={saveNote}
-                disabled={!title.trim() || !content.trim()}
+                disabled={
+                  !title.trim() ||
+                  !content.trim() ||
+                  saving
+                }
               >
-                {editingId ? 'Save Changes' : 'Save Note'}
+                {saving
+                  ? 'Saving...'
+                  : editingId
+                    ? 'Save Changes'
+                    : 'Save Note'}
               </button>
+
             </div>
 
           </div>
