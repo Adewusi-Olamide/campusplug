@@ -15,10 +15,11 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
-import supabase from "@/lib/supabase";
+import { createClient } from '@/lib/supabase/client'
 import "./page.css";
 
 const Page = () => {
+  const supabase = createClient();
   const router = useRouter();
 
   const [user, setUser] = useState(null);

@@ -1,5 +1,5 @@
 'use client'
-import supabase from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/client'
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -10,6 +10,7 @@ import './page.css'
 
 const Page = () => {
   const router = useRouter()
+  const supabase = createClient()
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)

@@ -14,10 +14,12 @@ import {
   CalendarDays,
   BookMarked,
 } from 'lucide-react'
-import supabase from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/client'
 import './page.css'
 
 const Page = () => {
+
+  const supabase = createClient();
 
   // Added: store the logged-in user's name
   const [userName, setUserName] = useState('Student')

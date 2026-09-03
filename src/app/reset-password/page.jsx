@@ -11,7 +11,7 @@ import {
   CheckCircle,
   AlertCircle,
 } from 'lucide-react'
-import supabase from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/client'
 import './page.css'
 
 const page = () => {

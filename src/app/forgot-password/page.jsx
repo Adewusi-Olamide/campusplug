@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Mail, ArrowLeft, GraduationCap, CheckCircle } from 'lucide-react'
-import supabase from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/client'
 import './page.css'
 
 const page = () => {

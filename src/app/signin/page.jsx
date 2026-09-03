@@ -2,13 +2,14 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import { Mail, Lock, Eye, EyeOff, GraduationCap } from 'lucide-react'
-import supabase from '@/lib/supabase'
 import { FaGoogle, FaGithub } from 'react-icons/fa'
 import './page.css'
 
 const page = () => {
   const router = useRouter()
+  const supabase = createClient()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

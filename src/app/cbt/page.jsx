@@ -457,16 +457,28 @@ const page = () => {
   };
 
   const beginTest = () => {
+    localStorage.removeItem("campusplug_cbt_result");
+
+    setAttemptSaved(false);
+    setSaveError("");
     setStage("exam");
+    setCurrentQuestion(0);
   };
+
+  
 
   useEffect(() => {
     if (stage !== "exam") return;
 
     if (timeLeft <= 0) {
       setShowSubmit(false);
-      saveQuizAttempt();
-      setStage("results");
+
+      const finishTest = async () => {
+        await saveQuizAttempt();
+        setStage("results");
+      };
+
+      finishTest();
       return;
     }
 
@@ -476,6 +488,31 @@ const page = () => {
 
     return () => clearInterval(timer);
   }, [stage, timeLeft]);
+
+
+  useEffect(() => {
+    const savedResult = localStorage.getItem("campusplug_cbt_result");
+
+    if (!savedResult) return;
+
+    try {
+      const result = JSON.parse(savedResult);
+
+      if (
+        result?.questions?.length &&
+        typeof result.score === "number"
+      ) {
+        setQuestions(result.questions);
+        setAnswers(result.answers || {});
+        setStage("results");
+        setAttemptSaved(true);
+      }
+    } catch (error) {
+      console.error("Error restoring CBT result:", error);
+      localStorage.removeItem("campusplug_cbt_result");
+    }
+  }, []);
+
 
   const selectAnswer = (optionIndex) => {
     setAnswers((prev) => ({
@@ -513,22 +550,17 @@ const page = () => {
       const supabase = createClient();
 
       const {
-        data: { session },
-        error: sessionError,
-      } = await supabase.auth.getSession();
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
 
-      console.log("CBT session:", session);
-
-      if (sessionError) {
-        throw sessionError;
+      if (userError) {
+        throw userError;
       }
-
-      const user = session?.user;
 
       if (!user) {
-        throw new Error("No active Supabase session.");
+        throw new Error("You must be logged in to save your CBT result.");
       }
-
 
       const finalScore = questions.reduce((total, question, index) => {
         return total + (answers[index] === question.answer ? 1 : 0);
@@ -576,8 +608,20 @@ const page = () => {
       }
 
       setAttemptSaved(true);
+
+      // Remember that this CBT has been completed
+      localStorage.setItem(
+        "campusplug_cbt_result",
+        JSON.stringify({
+          score: finalScore,
+          totalQuestions: questions.length,
+          answers,
+          questions,
+        })
+      );
     } catch (error) {
       console.error("Error saving quiz attempt:", error);
+
       setSaveError(
         error?.message || "Something went wrong while saving your result."
       );
@@ -585,6 +629,7 @@ const page = () => {
       setSavingAttempt(false);
     }
   };
+
 
   const score = useMemo(() => {
     if (!questions.length) return 0;
