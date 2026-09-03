@@ -112,12 +112,14 @@ const page = () => {
                 <button>Open Tool →</button>
               </div>
 
+              <Link href="/flashcard">
               <div className="tools">
                 <p className="flashcard"><Layers size={25} /></p>
                 <h1>Flashcards</h1>
                 <p>Learn faster with smart flashcards.</p>
                 <button>Open Tool →</button>
               </div>
+              </Link>
 
               <div className="tools">
                 <p className="focus"><Target size={25} /></p>

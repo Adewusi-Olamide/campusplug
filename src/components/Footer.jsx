@@ -19,7 +19,7 @@ const Footer = () => {
           <div className="left">
 
             <Link href="/">
-              <h2><GraduationCapIcon id="logo" size={50} />Campus<span className="campusplug">Plug</span></h2>
+              <h2><GraduationCapIcon id="logo" size={50} /><span className="campusplug">CampusPlug</span></h2>
             </Link>
 
             <p id="p">Your all-in-one study companion</p>

@@ -28,7 +28,7 @@ const Navbar = () => {
 
     setNoResults(false);
 
-    if (query === "home") {
+    if (query === "home", "campusplug", "campus") {
       router.push("/");
     }
     else if (query === "tools" || query === "tool") {
@@ -49,17 +49,20 @@ const Navbar = () => {
     else if (query === "signin" || query === "sign in") {
       router.push("/signin");
     }
-    else if (query === "dashboard" || query === "dashboard") {
+    else if (query === "dashboard" || query === "student dashboard","my dashboard") {
       router.push("/dashboard");
     }
     else if (query === "calculator" || query === "calculator") {
       router.push("/calculator");
     }
-    else if (query === "cbt" || query === "cbt exam") {
+    else if (query === "cbt" || query === "cbt exam","exam") {
       router.push("/cbt");
     }
     else if (query === "profile" || query === "my profile") {
       router.push("/profile");
+    }
+    else if (query === "flashcard" || query === "my flashcards","my flashcard","flashcards") {
+      router.push("/flashcard");
     }
     else {
       setNoResults(true);

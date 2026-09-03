@@ -51,7 +51,7 @@ const page = () => {
           <div className="logo-icon">
             <GraduationCap size={50} />
           </div>
-          <span>Campus<span className="plug">Plug</span></span>
+          <span><span className="plug">CampusPlug</span></span>
         </div>
 
         <div className="signin-header">
