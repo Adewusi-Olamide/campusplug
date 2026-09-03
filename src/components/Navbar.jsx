@@ -94,12 +94,6 @@ const Navbar = () => {
           ☰
         </button>
 
-        <Link href="/profile">
-        <div className="mobile-option">
-          <User size={20} />
-        </div>
-        </Link>
-
 
         <div className="center">
           <Link href="/" className={pathname === "/" ? "active" : ""}>
@@ -156,12 +150,13 @@ const Navbar = () => {
           )}
 
           <Link href="/profile">
-          <p className="user">
-            <User size={20} />
-          </p>
+            <p className="user">
+              <User size={20} />
+            </p>
 
+          </Link>
 
-</Link>          <Link href="signup">
+          <Link href="signup">
           <button>Get Started</button>
           </Link>
 

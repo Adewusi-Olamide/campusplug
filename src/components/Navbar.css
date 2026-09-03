@@ -37,15 +37,17 @@ body
 .user
 {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+  transition: all 0.5s ease;
   padding: 10px;
   border-radius: 50%;
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.226);
+  background-color: rgba(0, 0, 0, 0.363);
 }
 
-.mobile-option
+.user:hover
 {
-  display: none;
+  transition: all 0.5s ease;
+  background-color: rgba(0, 0, 0, 0.116);
 }
 
 .navbar .left
@@ -448,7 +450,6 @@ body
   /* ================= */
 
   .mobile-option {
-    display: block;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
     padding: 10px;
     border-radius: 50%;
