@@ -100,7 +100,7 @@ const page = () => {
           </div>
 
           <span>
-            Campus<span className="plug">Plug</span>
+            <span className="plug">CampusPlug</span>
           </span>
         </div>
 
