@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import React, { useState } from "react";
 import Image from "next/image";
 import "./page.css";
+import Link from "next/link";
 
 const page = () => {
 
@@ -315,9 +316,11 @@ const page = () => {
             placeholder="Enter your email"
           />
 
+          <Link href="/signup">
           <button>
             Subscribe
           </button>
+          </Link>
 
         </div>
 

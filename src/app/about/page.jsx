@@ -121,7 +121,9 @@ const page = () => {
           </div>
 
           <div className="right">
+            <Link href="/signup">
             <button>Get Started for Free</button>
+            </Link>
           </div>
 
         </div>

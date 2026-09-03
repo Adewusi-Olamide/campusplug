@@ -4,7 +4,7 @@ const Loading = () => {
   return (
     <div className="loading-page">
       <div className="loading-spinner"></div>
-      <p>Loading CampusPlug....</p>
+      <p>CampusPlug....</p>
     </div>
   );
 };

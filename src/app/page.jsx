@@ -66,13 +66,15 @@ const page = () => {
 
           <div className="features">
 
+            <Link href="/study-timer">
             <div className="d">
               <p className='clock'><Clock size={25} /></p>
               <h2>Smart Study Timer</h2>
               <p>Stay focused with the study timer feature and boost productivity.</p>
             </div>
+            </Link>
 
-            <Link href="task">
+            <Link href="/task">
             <div className="d">
               <p className='check'><CheckSquare size={25} /></p>
               <h2>Task & Goal Tracker</h2>

@@ -67,8 +67,8 @@ const Navbar = () => {
     else if (query === "note" || query === "my notes" || query === "notes") {
       router.push("/notes");
     }
-    else if (query === "task" || query === "my tasks" || query === "tasks" || query === "task and goal tracker" || query === "task & goal tracker" || query === "goal tracker") {
-      router.push("/task");
+    else if (query === "study timer" || query === "my study timer" || query === "study timers" || query === "study timer and goal tracker" || query === "study timer & goal tracker") {
+      router.push("/study timer");
     }
     else {
       setNoResults(true);

@@ -48,7 +48,7 @@ const Page = () => {
           </p>
         </div>
 
-        <Link href="/task" className="planner-button">
+        <Link href="/study-timer" className="planner-button">
           <CalendarDays size={18} />
           Study Planner
         </Link>
@@ -135,7 +135,7 @@ const Page = () => {
               <ArrowRight className="tool-arrow" size={19} />
             </Link>
 
-            <Link href="/flashcards" className="tool-card">
+            <Link href="/flashcard" className="tool-card">
               <div className="tool-icon">
                 <BookOpen size={24} />
               </div>
@@ -176,7 +176,7 @@ const Page = () => {
 
           <div className="progress-footer">
             <span>0 of 0 tasks completed</span>
-            <Link href="/study-planner">
+            <Link href="/study-timer">
               View planner <ArrowRight size={16} />
             </Link>
           </div>

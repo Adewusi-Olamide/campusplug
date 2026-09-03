@@ -38,6 +38,12 @@
   color: var(--purple);
 }
 
+.blog-hero-content  p
+  {
+    height: 50px;
+
+  }
+
 .blog-hero p {
   max-width: 650px;
   margin: auto;
@@ -356,23 +362,24 @@
 
 .newsletter-form {
   display: flex;
+  box-shadow: 0 15px 35px rgba(30, 40, 70, 0.08);
   min-width: 380px;
 }
 
 .newsletter-form input {
   width: 100%;
   height: 48px;
-  border: 1px solid #dfe3ea;
+  /* border: 1px solid #dfe3ea; */
   border-right: none;
   outline: none;
   padding: 0 15px;
-  border-radius: 8px 0 0 8px;
+  border-radius: 20px 0 0 20px;
   font-size: 15px;
 }
 
 .newsletter-form button {
   border: none;
-  padding: 0 20px;
+  padding: 13px 20px;
   background: var(--purple);
   color: white;
   font-size: 15px;
