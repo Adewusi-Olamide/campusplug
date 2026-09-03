@@ -1,5 +1,5 @@
 "use client";
-
+import { createClient } from "@/lib/supabase/client";
 import React, { useEffect, useMemo, useState } from "react";
 import "./page.css";
 
@@ -406,6 +406,10 @@ const page = () => {
     "English Language",
   ]);
 
+  const [savingAttempt, setSavingAttempt] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [attemptSaved, setAttemptSaved] = useState(false);
+
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
@@ -461,6 +465,7 @@ const page = () => {
 
     if (timeLeft <= 0) {
       setShowSubmit(false);
+      saveQuizAttempt();
       setStage("results");
       return;
     }
@@ -496,6 +501,89 @@ const page = () => {
     return questions.reduce((score, question, index) => {
       return score + (answers[index] === question.answer ? 1 : 0);
     }, 0);
+  };
+
+  const saveQuizAttempt = async () => {
+    if (savingAttempt || attemptSaved || !questions.length) return;
+
+    setSavingAttempt(true);
+    setSaveError("");
+
+    try {
+      const supabase = createClient();
+
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession();
+
+      console.log("CBT session:", session);
+
+      if (sessionError) {
+        throw sessionError;
+      }
+
+      const user = session?.user;
+
+      if (!user) {
+        throw new Error("No active Supabase session.");
+      }
+
+
+      const finalScore = questions.reduce((total, question, index) => {
+        return total + (answers[index] === question.answer ? 1 : 0);
+      }, 0);
+
+      const { data: attempt, error: attemptError } = await supabase
+        .from("quiz_attempts")
+        .insert({
+          user_id: user.id,
+          score: finalScore,
+          total_questions: questions.length,
+        })
+        .select("id")
+        .single();
+
+      if (attemptError) {
+        throw attemptError;
+      }
+
+      if (attempt?.id) {
+        const questionAttempts = questions.map((question, index) => {
+          const selectedIndex = answers[index];
+
+          return {
+            user_id: user.id,
+            quiz_attempt_id: attempt.id,
+            question_id: null,
+            selected_answer:
+              selectedIndex !== undefined
+                ? question.options[selectedIndex]
+                : null,
+            correct:
+              selectedIndex !== undefined &&
+              selectedIndex === question.answer,
+          };
+        });
+
+        const { error: questionError } = await supabase
+          .from("question_attempts")
+          .insert(questionAttempts);
+
+        if (questionError) {
+          throw questionError;
+        }
+      }
+
+      setAttemptSaved(true);
+    } catch (error) {
+      console.error("Error saving quiz attempt:", error);
+      setSaveError(
+        error?.message || "Something went wrong while saving your result."
+      );
+    } finally {
+      setSavingAttempt(false);
+    }
   };
 
   const score = useMemo(() => {
@@ -834,6 +922,24 @@ const page = () => {
                 ? "Good attempt. Keep practicing to improve."
                 : "Keep studying and give it another try."}
             </p>
+
+            {savingAttempt && (
+              <p className="save-status">
+                Saving your result...
+              </p>
+            )}
+
+            {attemptSaved && (
+              <p className="save-status success">
+                ✓ Result saved successfully.
+              </p>
+            )}
+
+            {saveError && (
+              <p className="save-status error">
+                {saveError}
+              </p>
+            )}
 
             <div className="result-stats">
               <div>
@@ -1206,8 +1312,9 @@ const page = () => {
                 <button
                   type="button"
                   className="primary-button"
-                  onClick={() => {
+                  onClick={async () => {
                     setShowSubmit(false);
+                    await saveQuizAttempt();
                     setStage("results");
                   }}
                 >

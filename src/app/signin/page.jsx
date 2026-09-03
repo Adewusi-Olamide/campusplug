@@ -43,6 +43,15 @@ const page = () => {
     router.push('/dashboard')
   }
 
+  const handleGithubSignup = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+  }
+
   return (
     <main className="signin-page">
       <div className="signin-card">
@@ -130,12 +139,8 @@ const page = () => {
         </div>
 
         <div className="social-buttons">
-          <button type="button" className="social-button">
-            <span className="google-icon"><FaGoogle /></span>
-            Continue with Google
-          </button>
 
-          <button type="button" className="social-button">
+          <button onClick={handleGithubSignup} type="button" className="social-button">
             <span className="github-icon"><FaGithub /></span>
             Continue with GitHub
           </button>

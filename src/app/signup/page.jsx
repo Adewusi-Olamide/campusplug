@@ -62,15 +62,6 @@ const Page = () => {
     }
   }
 
-  const handleGoogleSignup = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    })
-  }
-
   const handleGithubSignup = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
@@ -114,14 +105,6 @@ const Page = () => {
 
             {/* Social Signup */}
             <div className="social-buttons">
-              <button
-                type="button"
-                className="social-btn google-btn"
-                onClick={handleGoogleSignup}
-              >
-                <FaGoogle />
-                Continue with Google
-              </button>
 
               <button
                 type="button"
@@ -131,10 +114,6 @@ const Page = () => {
                 <FaGithub />
                 Continue with GitHub
               </button>
-            </div>
-
-            <div className="divider">
-              <span>or continue with email</span>
             </div>
 
             {error && (
