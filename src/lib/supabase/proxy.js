@@ -16,7 +16,7 @@ export async function updateSession(request) {
         },
 
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
 
@@ -32,7 +32,25 @@ export async function updateSession(request) {
     }
   );
 
-  await supabase.auth.getClaims();
+  const {
+    data: { claims },
+  } = await supabase.auth.getClaims();
+
+  const pathname = request.nextUrl.pathname;
+
+  const protectedRoutes = ["/dashboard", "/exam-history"];
+
+  const isProtectedRoute = protectedRoutes.some(
+    (route) =>
+      pathname === route || pathname.startsWith(`${route}/`)
+  );
+
+  if (isProtectedRoute && !claims) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/signin";
+
+    return NextResponse.redirect(url);
+  }
 
   return supabaseResponse;
 }

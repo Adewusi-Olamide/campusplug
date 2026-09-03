@@ -49,7 +49,7 @@ const page = () => {
             <p className="displaytext1">{displayText}</p>
 
             <div className="buttons">
-              <Link href="/signup"><button className='get-started'>Get Started Free →</button></Link>
+              <Link href="/dashboard"><button className='get-started'>My Dashboard</button></Link>
               <Link href="/signin"><button className='explore'>Sign In</button></Link>
             </div>
 
