@@ -28,7 +28,7 @@ const Navbar = () => {
 
     setNoResults(false);
 
-    if (query === "home", "campusplug", "campus") {
+    if (query === "home" || query === "campusplug" || query === "campus") {
       router.push("/");
     }
     else if (query === "tools" || query === "tool") {
@@ -43,26 +43,32 @@ const Navbar = () => {
     else if (query === "about" || query === "about us") {
       router.push("/about");
     }
-    else if (query === "signup" || query === "sign up") {
+    else if (query === "signup" || query === "sign up" || query === "get started") {
       router.push("/signup");
     }
     else if (query === "signin" || query === "sign in") {
       router.push("/signin");
     }
-    else if (query === "dashboard" || query === "student dashboard","my dashboard") {
+    else if (query === "dashboard" || query === "dashboard" || query === "my student dashboard" || query === "my dashboard") {
       router.push("/dashboard");
     }
     else if (query === "calculator" || query === "calculator") {
       router.push("/calculator");
     }
-    else if (query === "cbt" || query === "cbt exam","exam") {
+    else if (query === "cbt" || query === "cbt exam" || query === "exam") {
       router.push("/cbt");
     }
     else if (query === "profile" || query === "my profile") {
       router.push("/profile");
     }
-    else if (query === "flashcard" || query === "my flashcards","my flashcard","flashcards") {
+    else if (query === "flashcard" || query === "my flashcards" || query === "flashcards") {
       router.push("/flashcard");
+    }
+    else if (query === "note" || query === "my notes" || query === "notes") {
+      router.push("/notes");
+    }
+    else if (query === "task" || query === "my tasks" || query === "tasks" || query === "task and goal tracker" || query === "task & goal tracker" || query === "goal tracker") {
+      router.push("/task");
     }
     else {
       setNoResults(true);

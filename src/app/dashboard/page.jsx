@@ -48,7 +48,7 @@ const Page = () => {
           </p>
         </div>
 
-        <Link href="/study-planner" className="planner-button">
+        <Link href="/task" className="planner-button">
           <CalendarDays size={18} />
           Study Planner
         </Link>

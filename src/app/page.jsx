@@ -72,11 +72,13 @@ const page = () => {
               <p>Stay focused with the study timer feature and boost productivity.</p>
             </div>
 
+            <Link href="task">
             <div className="d">
               <p className='check'><CheckSquare size={25} /></p>
               <h2>Task & Goal Tracker</h2>
               <p>Organize tasks, set goals, and track your daily progress.</p>
             </div>
+            </Link>
 
             <Link href="/calculator">
             <div className="d">
@@ -105,12 +107,14 @@ const page = () => {
                 <Link href="/tools"><button>Explore All Tools →</button></Link>
               </div>
               
+              <Link href="/notes">
               <div className="tools">
                 <p className="note"><Notebook size={25} /></p>
                 <h1>Notes</h1>
                 <p>Create and organize beautiful notes.</p>
                 <button>Open Tool →</button>
               </div>
+              </Link>
 
               <Link href="/flashcard">
               <div className="tools">
