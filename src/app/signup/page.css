@@ -346,6 +346,20 @@ body
   text-decoration: none;
 }
 
+/* dd */
+
+.signup-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 15px 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #edf8f0;
+  color: #34834b;
+  font-size: 13px;
+  font-weight: 600;
+}
 
 /* RESPONSIVE */
 

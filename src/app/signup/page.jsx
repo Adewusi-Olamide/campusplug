@@ -1,10 +1,11 @@
 'use client'
+
 import { createClient } from '@/lib/supabase/client'
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff, GraduationCap, Mail, Lock, User } from 'lucide-react'
-import { FaGoogle, FaGithub } from 'react-icons/fa'
+import { FaGithub } from 'react-icons/fa'
 import { CircleAlert } from 'lucide-react'
 import './page.css'
 
@@ -21,10 +22,13 @@ const Page = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     setError('')
+    setSuccess('')
 
     if (password !== confirmPassword) {
       setError('Passwords do not match')
@@ -38,38 +42,64 @@ const Page = () => {
 
     setLoading(true)
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
+    try {
+      const { data, error: signupError } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+          },
         },
-      },
-    })
+      })
 
-    setLoading(false)
+      if (signupError) {
+        console.error('Supabase signup error:', signupError)
+        setError(signupError.message)
+        return
+      }
 
-    if (error) {
-      setError(error.message)
-      return
-    }
+      if (data?.user && !data?.session) {
+        setSuccess(
+          'Account created successfully. Please check your email to verify your account.'
+        )
 
-    // If email confirmation is required, session will be null
-    if (data?.user && !data?.session) {
-      router.push('/signin')
-    } else {
-      router.push('/dashboard')
+        setTimeout(() => {
+          router.push('/signin')
+        }, 2500)
+
+        return
+      }
+
+      if (data?.session) {
+        router.push('/dashboard')
+        return
+      }
+
+      setError('Something went wrong while creating your account.')
+    } catch (error) {
+      console.error('Signup error:', error)
+      setError('Unable to create your account. Please try again.')
+    } finally {
+      setLoading(false)
     }
   }
 
   const handleGithubSignup = async () => {
-    await supabase.auth.signInWithOAuth({
+    setError('')
+    setSuccess('')
+
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
     })
+
+    if (error) {
+      console.error('GitHub signup error:', error)
+      setError(error.message)
+    }
   }
 
   return (
@@ -106,7 +136,6 @@ const Page = () => {
 
             {/* Social Signup */}
             <div className="social-buttons">
-
               <button
                 type="button"
                 className="social-btn github-btn"
@@ -118,7 +147,16 @@ const Page = () => {
             </div>
 
             {error && (
-              <p className="password-error"><CircleAlert size={30} />{error}</p>
+              <p className="password-error">
+                <CircleAlert size={30} />
+                {error}
+              </p>
+            )}
+
+            {success && (
+              <p className="signup-success">
+                {success}
+              </p>
             )}
 
             {/* Form */}
@@ -156,6 +194,7 @@ const Page = () => {
                 <label>Password</label>
                 <div className="input-wrapper">
                   <Lock size={18} />
+
                   <input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Create a password"
@@ -163,27 +202,37 @@ const Page = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
+
                   <button
                     type="button"
                     className="password-toggle"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
                   </button>
                 </div>
               </div>
 
               <div className="input-group">
                 <label>Confirm password</label>
+
                 <div className="input-wrapper">
                   <Lock size={18} />
+
                   <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="Confirm your password"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) =>
+                      setConfirmPassword(e.target.value)
+                    }
                     required
                   />
+
                   <button
                     type="button"
                     className="password-toggle"
@@ -191,20 +240,29 @@ const Page = () => {
                       setShowConfirmPassword(!showConfirmPassword)
                     }
                   >
-                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showConfirmPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
                   </button>
                 </div>
               </div>
 
               <div className="terms">
                 <input type="checkbox" id="terms" required />
+
                 <label htmlFor="terms">
                   I agree to the <Link href="#">Terms of Service</Link> and{' '}
                   <Link href="#">Privacy Policy</Link>
                 </label>
               </div>
 
-              <button type="submit" className="signup-submit" disabled={loading}>
+              <button
+                type="submit"
+                className="signup-submit"
+                disabled={loading}
+              >
                 {loading ? 'Creating account...' : 'Create Account'}
               </button>
 

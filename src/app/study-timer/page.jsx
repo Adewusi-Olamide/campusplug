@@ -1,5 +1,5 @@
 'use client'
-
+import { createClient } from '@/lib/supabase/client'
 import React, { useEffect, useMemo, useState } from 'react'
 import {
   Plus,
@@ -18,6 +18,7 @@ import {
 import './page.css'
 
 const page = () => {
+  const supabase = createClient()
   const [tasks, setTasks] = useState([])
   const [goals, setGoals] = useState([])
   const [sessions, setSessions] = useState([])
@@ -45,29 +46,76 @@ const page = () => {
   const [sessionMinutes, setSessionMinutes] = useState('')
 
   useEffect(() => {
-    const savedTasks = localStorage.getItem('campusplug-study-tasks')
-    const savedGoals = localStorage.getItem('campusplug-study-goals')
-    const savedSessions = localStorage.getItem('campusplug-study-sessions')
+    const loadPlannerData = async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser()
 
-    if (savedTasks) setTasks(JSON.parse(savedTasks))
-    if (savedGoals) setGoals(JSON.parse(savedGoals))
-    if (savedSessions) setSessions(JSON.parse(savedSessions))
+      if (userError || !user) return
+
+      const [tasksResult, goalsResult, sessionsResult] =
+        await Promise.all([
+          supabase
+            .from('study_tasks')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false }),
+
+          supabase
+            .from('study_goals')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false }),
+
+          supabase
+            .from('study_sessions')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false }),
+        ])
+
+      if (!tasksResult.error) {
+        setTasks(
+          tasksResult.data.map((task) => ({
+            id: task.id,
+            title: task.title,
+            subject: task.subject,
+            date: task.task_date,
+            start: task.start_time || '',
+            end: task.end_time || '',
+            priority: task.priority,
+            completed: task.completed,
+          }))
+        )
+      }
+
+      if (!goalsResult.error) {
+        setGoals(
+          goalsResult.data.map((goal) => ({
+            id: goal.id,
+            title: goal.title,
+            subject: goal.subject,
+            target: goal.target_date || '',
+            progress: goal.progress,
+          }))
+        )
+      }
+
+      if (!sessionsResult.error) {
+        setSessions(
+          sessionsResult.data.map((session) => ({
+            id: session.id,
+            subject: session.subject,
+            minutes: session.minutes,
+            date: session.session_date,
+          }))
+        )
+      }
+    }
+
+    loadPlannerData()
   }, [])
-
-  useEffect(() => {
-    localStorage.setItem('campusplug-study-tasks', JSON.stringify(tasks))
-  }, [tasks])
-
-  useEffect(() => {
-    localStorage.setItem('campusplug-study-goals', JSON.stringify(goals))
-  }, [goals])
-
-  useEffect(() => {
-    localStorage.setItem(
-      'campusplug-study-sessions',
-      JSON.stringify(sessions)
-    )
-  }, [sessions])
 
   const today = new Date().toISOString().split('T')[0]
 
@@ -162,56 +210,133 @@ const page = () => {
     setShowTaskModal(false)
   }
 
-  const saveTask = () => {
+  const saveTask = async () => {
     if (!taskTitle.trim() || !taskDate) return
 
-    if (editingTaskId) {
-      setTasks(
-        tasks.map((task) =>
-          task.id === editingTaskId
-            ? {
-                ...task,
-                title: taskTitle.trim(),
-                subject: taskSubject.trim() || 'General',
-                date: taskDate,
-                start: taskStart,
-                end: taskEnd,
-                priority: taskPriority,
-              }
-            : task
-        )
-      )
-    } else {
-      const newTask = {
-        id: Date.now(),
-        title: taskTitle.trim(),
-        subject: taskSubject.trim() || 'General',
-        date: taskDate,
-        start: taskStart,
-        end: taskEnd,
-        priority: taskPriority,
-        completed: false,
-      }
+    const {
+    data: { user },
+    } = await supabase.auth.getUser()
 
-      setTasks([newTask, ...tasks])
+    if (!user) return
+
+    if (editingTaskId) {
+    const { error } = await supabase
+    .from('study_tasks')
+    .update({
+    title: taskTitle.trim(),
+    subject: taskSubject.trim() || 'General',
+    task_date: taskDate,
+    start_time: taskStart || null,
+    end_time: taskEnd || null,
+    priority: taskPriority,
+    updated_at: new Date().toISOString(),
+    })
+    .eq('id', editingTaskId)
+    .eq('user_id', user.id)
+
+    if (error) {  
+      console.error('Error updating task:', error)  
+      return  
+    }  
+
+    setTasks(  
+      tasks.map((task) =>  
+        task.id === editingTaskId  
+          ? {  
+              ...task,  
+              title: taskTitle.trim(),  
+              subject: taskSubject.trim() || 'General',  
+              date: taskDate,  
+              start: taskStart,  
+              end: taskEnd,  
+              priority: taskPriority,  
+            }  
+          : task  
+      )  
+    )
+
+    } else {
+    const { data, error } = await supabase
+    .from('study_tasks')
+    .insert({
+    user_id: user.id,
+    title: taskTitle.trim(),
+    subject: taskSubject.trim() || 'General',
+    task_date: taskDate,
+    start_time: taskStart || null,
+    end_time: taskEnd || null,
+    priority: taskPriority,
+    completed: false,
+    })
+    .select()
+    .single()
+
+    if (error) {  
+      console.error('Error creating task:', error)  
+      return  
+    }  
+
+    const newTask = {  
+      id: data.id,  
+      title: data.title,  
+      subject: data.subject,  
+      date: data.task_date,  
+      start: data.start_time || '',  
+      end: data.end_time || '',  
+      priority: data.priority,  
+      completed: data.completed,  
+    }  
+
+    setTasks([newTask, ...tasks])
+
     }
 
     closeTaskModal()
+    }
+
+  const toggleTask = async (id) => {
+  const task = tasks.find((task) => task.id === id)
+
+  if (!task) return
+
+  const newCompleted = !task.completed
+
+  const { error } = await supabase
+  .from('study_tasks')
+  .update({
+  completed: newCompleted,
+  updated_at: new Date().toISOString(),
+  })
+  .eq('id', id)
+
+  if (error) {
+  console.error('Error updating task:', error)
+  return
   }
 
-  const toggleTask = (id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id
-          ? { ...task, completed: !task.completed }
-          : task
-      )
-    )
+  setTasks(
+  tasks.map((task) =>
+  task.id === id
+  ? { ...task, completed: newCompleted }
+  : task
+  )
+  )
   }
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id))
+  const deleteTask = async (id) => {
+  const { error } = await supabase
+  .from('study_tasks')
+  .delete()
+  .eq('id', id)
+
+  if (error) {
+  console.error('Error deleting task:', error)
+  return
   }
+
+  setTasks(tasks.filter((task) => task.id !== id))
+  }
+
 
   const createGoal = () => {
     if (!goalTitle.trim()) return
@@ -249,14 +374,36 @@ const page = () => {
     setGoals(goals.filter((goal) => goal.id !== id))
   }
 
-  const addStudySession = () => {
+  const addStudySession = async () => {
     if (!sessionSubject.trim() || !sessionMinutes) return
 
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) return
+
+    const { data, error } = await supabase
+      .from('study_sessions')
+      .insert({
+        user_id: user.id,
+        subject: sessionSubject.trim(),
+        minutes: Number(sessionMinutes),
+        session_date: today,
+      })
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error creating study session:', error)
+      return
+    }
+
     const newSession = {
-      id: Date.now(),
-      subject: sessionSubject.trim(),
-      minutes: Number(sessionMinutes),
-      date: today,
+      id: data.id,
+      subject: data.subject,
+      minutes: data.minutes,
+      date: data.session_date,
     }
 
     setSessions([newSession, ...sessions])
@@ -265,6 +412,7 @@ const page = () => {
     setSessionMinutes('')
     setShowSessionModal(false)
   }
+
 
   const formatDate = (date) => {
     if (!date) return ''
@@ -922,7 +1070,7 @@ const page = () => {
 
               <button
                 className="save-btn"
-                onClick={addStudySession}
+                onClick={saveTask}
                 disabled={
                   !sessionSubject.trim() ||
                   !sessionMinutes
