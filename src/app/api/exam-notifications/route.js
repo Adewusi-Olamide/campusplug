@@ -1,3 +1,4 @@
+'use client'
 import { Resend } from 'resend'
 import { createClient } from '@supabase/supabase-js'
 import { useState } from 'react'
