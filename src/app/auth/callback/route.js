@@ -6,7 +6,7 @@ export async function GET(request) {
   const code = searchParams.get('code')
 
   if (code) {
-    const supabase = await createClient()
+    const supabase = await supabase()
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
