@@ -1,1092 +1,1244 @@
-'use client'
-import { createClient } from '@/lib/supabase/client'
-import React, { useEffect, useMemo, useState } from 'react'
+
+
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Plus,
   Check,
   Trash2,
-  Pencil,
-  X,
-  Target,
-  Clock3,
-  BookOpen,
-  Flame,
+  Edit3,
   CalendarDays,
-  TrendingUp,
-  ChevronDown,
-} from 'lucide-react'
-import './page.css'
+  Clock,
+  BookOpen,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+
+import { createClient } from "@/lib/supabase/client";
+
+import "./page.css";
 
 const page = () => {
-  const supabase = createClient()
-  const [tasks, setTasks] = useState([])
-  const [goals, setGoals] = useState([])
-  const [sessions, setSessions] = useState([])
+  const supabase = createClient();
+  const [user, setUser] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  const [taskFilter, setTaskFilter] = useState('All')
-  const [showTaskModal, setShowTaskModal] = useState(false)
-  const [showGoalModal, setShowGoalModal] = useState(false)
-  const [showSessionModal, setShowSessionModal] = useState(false)
+  const [showForm, setShowForm] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
-  const [editingTaskId, setEditingTaskId] = useState(null)
+  const [view, setView] = useState("week");
+  const [currentWeek, setCurrentWeek] = useState(new Date());
 
-  const [taskTitle, setTaskTitle] = useState('')
-  const [taskSubject, setTaskSubject] = useState('')
-  const [taskDate, setTaskDate] = useState('')
-  const [taskStart, setTaskStart] = useState('')
-  const [taskEnd, setTaskEnd] = useState('')
-  const [taskPriority, setTaskPriority] = useState('Medium')
+  const [form, setForm] = useState({
+    title: "",
+    subject: "",
+    task_date: "",
+    start_time: "",
+    end_time: "",
+    priority: "medium",
+  });
 
-  const [goalTitle, setGoalTitle] = useState('')
-  const [goalSubject, setGoalSubject] = useState('')
-  const [goalTarget, setGoalTarget] = useState('')
-  const [goalProgress, setGoalProgress] = useState(0)
-
-  const [sessionSubject, setSessionSubject] = useState('')
-  const [sessionMinutes, setSessionMinutes] = useState('')
+  /* ---------------- GET CURRENT USER ---------------- */
 
   useEffect(() => {
-    const loadPlannerData = async () => {
+    const getUser = async () => {
       const {
         data: { user },
-        error: userError,
-      } = await supabase.auth.getUser()
+        error,
+      } = await supabase.auth.getUser();
 
-      if (userError || !user) return
-
-      const [tasksResult, goalsResult, sessionsResult] =
-        await Promise.all([
-          supabase
-            .from('study_tasks')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false }),
-
-          supabase
-            .from('study_goals')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false }),
-
-          supabase
-            .from('study_sessions')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false }),
-        ])
-
-      if (!tasksResult.error) {
-        setTasks(
-          tasksResult.data.map((task) => ({
-            id: task.id,
-            title: task.title,
-            subject: task.subject,
-            date: task.task_date,
-            start: task.start_time || '',
-            end: task.end_time || '',
-            priority: task.priority,
-            completed: task.completed,
-          }))
-        )
+      if (error) {
+        console.error("Error getting user:", error);
+        setLoading(false);
+        return;
       }
 
-      if (!goalsResult.error) {
-        setGoals(
-          goalsResult.data.map((goal) => ({
-            id: goal.id,
-            title: goal.title,
-            subject: goal.subject,
-            target: goal.target_date || '',
-            progress: goal.progress,
-          }))
-        )
+      if (!user) {
+        setLoading(false);
+        return;
       }
 
-      if (!sessionsResult.error) {
-        setSessions(
-          sessionsResult.data.map((session) => ({
-            id: session.id,
-            subject: session.subject,
-            minutes: session.minutes,
-            date: session.session_date,
-          }))
-        )
-      }
-    }
+      setUser(user);
+      await loadTasks(user.id);
+    };
 
-    loadPlannerData()
-  }, [])
+    getUser();
+  }, []);
 
-  const today = new Date().toISOString().split('T')[0]
+  /* ---------------- LOAD TASKS ---------------- */
 
-  const totalTasks = tasks.length
-  const completedTasks = tasks.filter((task) => task.completed).length
-
-  const taskProgress =
-    totalTasks === 0
-      ? 0
-      : Math.round((completedTasks / totalTasks) * 100)
-
-  const totalStudyMinutes = sessions.reduce(
-    (total, session) => total + Number(session.minutes || 0),
-    0
-  )
-
-  const totalStudyHours = Math.floor(totalStudyMinutes / 60)
-  const remainingStudyMinutes = totalStudyMinutes % 60
-
-  const completedSessions = sessions.length
-
-  const currentStreak = useMemo(() => {
-    const studyDates = [
-      ...new Set(
-        sessions.map((session) => session.date)
-      ),
-    ].sort((a, b) => new Date(b) - new Date(a))
-
-    if (studyDates.length === 0) return 0
-
-    let streak = 0
-    let checkDate = new Date()
-
-    for (let i = 0; i < studyDates.length; i++) {
-      const dateString = checkDate.toISOString().split('T')[0]
-
-      if (studyDates.includes(dateString)) {
-        streak++
-        checkDate.setDate(checkDate.getDate() - 1)
-      } else {
-        break
-      }
-    }
-
-    return streak
-  }, [sessions])
-
-  const filteredTasks = tasks.filter((task) => {
-    if (taskFilter === 'Today') {
-      return task.date === today
-    }
-
-    if (taskFilter === 'Upcoming') {
-      return task.date > today && !task.completed
-    }
-
-    if (taskFilter === 'Completed') {
-      return task.completed
-    }
-
-    return true
-  })
-
-  const resetTaskForm = () => {
-    setTaskTitle('')
-    setTaskSubject('')
-    setTaskDate('')
-    setTaskStart('')
-    setTaskEnd('')
-    setTaskPriority('Medium')
-    setEditingTaskId(null)
-  }
-
-  const openNewTask = () => {
-    resetTaskForm()
-    setShowTaskModal(true)
-  }
-
-  const openEditTask = (task) => {
-    setEditingTaskId(task.id)
-    setTaskTitle(task.title)
-    setTaskSubject(task.subject)
-    setTaskDate(task.date)
-    setTaskStart(task.start)
-    setTaskEnd(task.end)
-    setTaskPriority(task.priority)
-    setShowTaskModal(true)
-  }
-
-  const closeTaskModal = () => {
-    resetTaskForm()
-    setShowTaskModal(false)
-  }
-
-  const saveTask = async () => {
-    if (!taskTitle.trim() || !taskDate) return
-
-    const {
-    data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) return
-
-    if (editingTaskId) {
-    const { error } = await supabase
-    .from('study_tasks')
-    .update({
-    title: taskTitle.trim(),
-    subject: taskSubject.trim() || 'General',
-    task_date: taskDate,
-    start_time: taskStart || null,
-    end_time: taskEnd || null,
-    priority: taskPriority,
-    updated_at: new Date().toISOString(),
-    })
-    .eq('id', editingTaskId)
-    .eq('user_id', user.id)
-
-    if (error) {  
-      console.error('Error updating task:', error)  
-      return  
-    }  
-
-    setTasks(  
-      tasks.map((task) =>  
-        task.id === editingTaskId  
-          ? {  
-              ...task,  
-              title: taskTitle.trim(),  
-              subject: taskSubject.trim() || 'General',  
-              date: taskDate,  
-              start: taskStart,  
-              end: taskEnd,  
-              priority: taskPriority,  
-            }  
-          : task  
-      )  
-    )
-
-    } else {
-    const { data, error } = await supabase
-    .from('study_tasks')
-    .insert({
-    user_id: user.id,
-    title: taskTitle.trim(),
-    subject: taskSubject.trim() || 'General',
-    task_date: taskDate,
-    start_time: taskStart || null,
-    end_time: taskEnd || null,
-    priority: taskPriority,
-    completed: false,
-    })
-    .select()
-    .single()
-
-    if (error) {  
-      console.error('Error creating task:', error)  
-      return  
-    }  
-
-    const newTask = {  
-      id: data.id,  
-      title: data.title,  
-      subject: data.subject,  
-      date: data.task_date,  
-      start: data.start_time || '',  
-      end: data.end_time || '',  
-      priority: data.priority,  
-      completed: data.completed,  
-    }  
-
-    setTasks([newTask, ...tasks])
-
-    }
-
-    closeTaskModal()
-    }
-
-  const toggleTask = async (id) => {
-  const task = tasks.find((task) => task.id === id)
-
-  if (!task) return
-
-  const newCompleted = !task.completed
-
-  const { error } = await supabase
-  .from('study_tasks')
-  .update({
-  completed: newCompleted,
-  updated_at: new Date().toISOString(),
-  })
-  .eq('id', id)
-
-  if (error) {
-  console.error('Error updating task:', error)
-  return
-  }
-
-  setTasks(
-  tasks.map((task) =>
-  task.id === id
-  ? { ...task, completed: newCompleted }
-  : task
-  )
-  )
-  }
-
-  const deleteTask = async (id) => {
-  const { error } = await supabase
-  .from('study_tasks')
-  .delete()
-  .eq('id', id)
-
-  if (error) {
-  console.error('Error deleting task:', error)
-  return
-  }
-
-  setTasks(tasks.filter((task) => task.id !== id))
-  }
-
-
-  const createGoal = () => {
-    if (!goalTitle.trim()) return
-
-    const newGoal = {
-      id: Date.now(),
-      title: goalTitle.trim(),
-      subject: goalSubject.trim() || 'General',
-      target: goalTarget,
-      progress: Number(goalProgress),
-    }
-
-    setGoals([newGoal, ...goals])
-
-    setGoalTitle('')
-    setGoalSubject('')
-    setGoalTarget('')
-    setGoalProgress(0)
-    setShowGoalModal(false)
-  }
-
-  const updateGoalProgress = (id, value) => {
-    const progress = Math.min(100, Math.max(0, Number(value)))
-
-    setGoals(
-      goals.map((goal) =>
-        goal.id === id
-          ? { ...goal, progress }
-          : goal
-      )
-    )
-  }
-
-  const deleteGoal = (id) => {
-    setGoals(goals.filter((goal) => goal.id !== id))
-  }
-
-  const addStudySession = async () => {
-    if (!sessionSubject.trim() || !sessionMinutes) return
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) return
+  const loadTasks = async (userId) => {
+    setLoading(true);
 
     const { data, error } = await supabase
-      .from('study_sessions')
-      .insert({
-        user_id: user.id,
-        subject: sessionSubject.trim(),
-        minutes: Number(sessionMinutes),
-        session_date: today,
-      })
-      .select()
-      .single()
+      .from("study_tasks")
+      .select("*")
+      .eq("user_id", userId)
+      .order("task_date", { ascending: true })
+      .order("start_time", { ascending: true });
 
     if (error) {
-      console.error('Error creating study session:', error)
-      return
+      console.error("Error loading study tasks:", error);
+      setLoading(false);
+      return;
     }
 
-    const newSession = {
-      id: data.id,
-      subject: data.subject,
-      minutes: data.minutes,
-      date: data.session_date,
+    setTasks(data || []);
+    setLoading(false);
+  };
+
+  /* ---------------- FORM INPUT ---------------- */
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  /* ---------------- OPEN ADD FORM ---------------- */
+
+  const openAddForm = () => {
+    setEditingTask(null);
+
+    setForm({
+      title: "",
+      subject: "",
+      task_date: new Date().toISOString().split("T")[0],
+      start_time: "",
+      end_time: "",
+      priority: "medium",
+    });
+
+    setShowForm(true);
+  };
+
+  /* ---------------- OPEN EDIT FORM ---------------- */
+
+  const openEditForm = (task) => {
+    setEditingTask(task);
+
+    setForm({
+      title: task.title || "",
+      subject: task.subject || "",
+      task_date: task.task_date || "",
+      start_time: task.start_time || "",
+      end_time: task.end_time || "",
+      priority: task.priority || "medium",
+    });
+
+    setShowForm(true);
+  };
+
+  /* ---------------- CLOSE FORM ---------------- */
+
+  const closeForm = () => {
+    if (saving) return;
+
+    setShowForm(false);
+    setEditingTask(null);
+  };
+
+  /* ---------------- ADD / UPDATE TASK ---------------- */
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      alert("Please log in first.");
+      return;
     }
 
-    setSessions([newSession, ...sessions])
+    if (!form.title.trim()) {
+      alert("Please enter a task title.");
+      return;
+    }
 
-    setSessionSubject('')
-    setSessionMinutes('')
-    setShowSessionModal(false)
-  }
+    if (!form.task_date) {
+      alert("Please select a date.");
+      return;
+    }
 
+    setSaving(true);
+
+    if (editingTask) {
+      const { data, error } = await supabase
+        .from("study_tasks")
+        .update({
+          title: form.title.trim(),
+          subject: form.subject.trim(),
+          task_date: form.task_date,
+          start_time: form.start_time || null,
+          end_time: form.end_time || null,
+          priority: form.priority,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", editingTask.id)
+        .eq("user_id", user.id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Error updating task:", error);
+        alert("Could not update the task.");
+        setSaving(false);
+        return;
+      }
+
+      setTasks((prev) =>
+        prev.map((task) => (task.id === data.id ? data : task))
+      );
+    } else {
+      const newTask = {
+        user_id: user.id,
+        title: form.title.trim(),
+        subject: form.subject.trim(),
+        task_date: form.task_date,
+        start_time: form.start_time || null,
+        end_time: form.end_time || null,
+        priority: form.priority,
+        completed: false,
+        task_key: `${user.id}-${Date.now()}`,
+      };
+
+      const { data, error } = await supabase
+        .from("study_tasks")
+        .insert(newTask)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Error creating task:", error);
+        alert("Could not save the task.");
+        setSaving(false);
+        return;
+      }
+
+      setTasks((prev) => [...prev, data]);
+    }
+
+    setSaving(false);
+    setShowForm(false);
+    setEditingTask(null);
+
+    setForm({
+      title: "",
+      subject: "",
+      task_date: "",
+      start_time: "",
+      end_time: "",
+      priority: "medium",
+    });
+  };
+
+  /* ---------------- TOGGLE COMPLETION ---------------- */
+
+  const toggleTask = async (task) => {
+    const newCompletedState = !task.completed;
+
+    // Update UI immediately
+    setTasks((prev) =>
+      prev.map((item) =>
+        item.id === task.id
+          ? { ...item, completed: newCompletedState }
+          : item
+      )
+    );
+
+    const { error } = await supabase
+      .from("study_tasks")
+      .update({
+        completed: newCompletedState,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", task.id)
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error updating task:", error);
+
+      // Revert if Supabase fails
+      setTasks((prev) =>
+        prev.map((item) =>
+          item.id === task.id
+            ? { ...item, completed: task.completed }
+            : item
+        )
+      );
+
+      alert("Could not save your progress.");
+    }
+  };
+
+  /* ---------------- DELETE TASK ---------------- */
+
+  const deleteTask = async (taskId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this study task?"
+    );
+
+    if (!confirmed) return;
+
+    const previousTasks = [...tasks];
+
+    setTasks((prev) => prev.filter((task) => task.id !== taskId));
+
+    const { error } = await supabase
+      .from("study_tasks")
+      .delete()
+      .eq("id", taskId)
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error deleting task:", error);
+
+      setTasks(previousTasks);
+
+      alert("Could not delete the task.");
+    }
+  };
+
+  /* ---------------- CALENDAR HELPERS ---------------- */
+
+  const getDateKey = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
+  const getStartOfWeek = (date) => {
+    const result = new Date(date);
+    const day = result.getDay();
+
+    result.setDate(result.getDate() - day);
+    result.setHours(0, 0, 0, 0);
+
+    return result;
+  };
+
+  const getWeekDays = (date) => {
+    const start = getStartOfWeek(date);
+
+    return Array.from({ length: 7 }, (_, index) => {
+      const day = new Date(start);
+      day.setDate(start.getDate() + index);
+
+      return day;
+    });
+  };
+
+  const weekDays = getWeekDays(currentWeek);
+
+  const previousWeek = () => {
+    const date = new Date(currentWeek);
+    date.setDate(date.getDate() - 7);
+    setCurrentWeek(date);
+  };
+
+  const nextWeek = () => {
+    const date = new Date(currentWeek);
+    date.setDate(date.getDate() + 7);
+    setCurrentWeek(date);
+  };
+
+  const goToCurrentWeek = () => {
+    setCurrentWeek(new Date());
+  };
+
+  const getTasksForDay = (date) => {
+    const dateKey = getDateKey(date);
+
+    return tasks
+      .filter((task) => task.task_date === dateKey)
+      .sort((a, b) =>
+        (a.start_time || "").localeCompare(
+          b.start_time || ""
+        )
+      );
+  };
+
+  const weekLabel = `${weekDays[0].toLocaleDateString(
+    "en-US",
+    {
+      month: "short",
+      day: "numeric",
+    }
+  )} - ${weekDays[6].toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })}`;
+
+
+  /* ---------------- PROGRESS ---------------- */
+
+  const completedTasks = tasks.filter((task) => task.completed).length;
+
+  const progress =
+    tasks.length === 0
+      ? 0
+      : Math.round((completedTasks / tasks.length) * 100);
+
+  /* ---------------- TODAY ---------------- */
+
+  const today = getDateKey(new Date());
+
+  const todayTasks = tasks.filter((task) => task.task_date === today);
+
+  /* ---------------- DATE FORMAT ---------------- */
 
   const formatDate = (date) => {
-    if (!date) return ''
+    if (!date) return "";
 
-    return new Date(`${date}T00:00:00`).toLocaleDateString(
-      'en-US',
-      {
-        month: 'short',
-        day: 'numeric',
-      }
-    )
-  }
+    return new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  /* ---------------- TIME FORMAT ---------------- */
 
   const formatTime = (time) => {
-    if (!time) return ''
+    if (!time) return "";
 
-    return new Date(`2000-01-01T${time}`).toLocaleTimeString(
-      'en-US',
-      {
-        hour: 'numeric',
-        minute: '2-digit',
-      }
-    )
+    const [hours, minutes] = time.split(":");
+
+    const date = new Date();
+    date.setHours(Number(hours), Number(minutes));
+
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  };
+
+  /* ---------------- LOADING ---------------- */
+
+  if (loading) {
+    return (
+      <main className="study-planner-page">
+        <div className="planner-loading">
+          <div className="planner-loader"></div>
+          <p>Loading your study planner...</p>
+        </div>
+      </main>
+    );
   }
 
+  /* ---------------- PAGE ---------------- */
+
   return (
-    <main className="planner-page">
+    <main className="study-planner-page">
+      <div className="study-planner-container">
 
-      {/* Header */}
+        {/* HEADER */}
 
-      <section className="planner-header">
-        <div>
-          <span className="page-kicker">STAY CONSISTENT</span>
-          <h1>Study Planner & Goal Tracker</h1>
-          <p>
-            Plan your study time, track your effort, and stay
-            focused on your goals.
-          </p>
-        </div>
+        <section className="planner-header">
+          <div>
+            <span className="planner-label">STUDY PLANNER</span>
 
-        <div className="header-actions">
-          <button
-            className="session-btn"
-            onClick={() => setShowSessionModal(true)}
-          >
-            <Clock3 size={18} />
-            Log Study Session
-          </button>
+            <h1>
+              Plan your study.
+              <br />
+              <span>Own your progress.</span>
+            </h1>
+
+            <p>
+              Organize your study sessions, keep track of your tasks,
+              and stay consistent.
+            </p>
+          </div>
 
           <button
-            className="primary-btn"
-            onClick={openNewTask}
+            className="add-task-btn"
+            onClick={openAddForm}
           >
             <Plus size={19} />
             Add Task
           </button>
-        </div>
-      </section>
+        </section>
 
-      {/* Stats */}
+        {/* STATS */}
 
-      <section className="stats-grid">
+        <section className="planner-stats">
 
-        <div className="stat-card">
-          <div className="stat-icon">
-            <TrendingUp size={21} />
-          </div>
-          <div>
-            <span>Task Progress</span>
-            <strong>{taskProgress}%</strong>
-          </div>
-        </div>
+          <div className="planner-stat-card">
+            <div className="stat-icon">
+              <BookOpen size={20} />
+            </div>
 
-        <div className="stat-card">
-          <div className="stat-icon">
-            <Clock3 size={21} />
-          </div>
-          <div>
-            <span>Study Time</span>
-            <strong>
-              {totalStudyHours}h {remainingStudyMinutes}m
-            </strong>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon">
-            <Check size={21} />
-          </div>
-          <div>
-            <span>Tasks Completed</span>
-            <strong>
-              {completedTasks}/{totalTasks}
-            </strong>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon streak-icon">
-            <Flame size={21} />
-          </div>
-          <div>
-            <span>Study Streak</span>
-            <strong>{currentStreak} days</strong>
-          </div>
-        </div>
-
-      </section>
-
-      <section className="planner-layout">
-
-        {/* Today's plan */}
-
-        <div className="planner-main">
-
-          <div className="section-heading">
             <div>
-              <h2>Study Plan</h2>
-              <p>Organize and complete your study tasks.</p>
-            </div>
-
-            <div className="task-filter">
-              <select
-                value={taskFilter}
-                onChange={(e) => setTaskFilter(e.target.value)}
-              >
-                <option>All</option>
-                <option>Today</option>
-                <option>Upcoming</option>
-                <option>Completed</option>
-              </select>
-              <ChevronDown size={15} />
+              <span>Total Tasks</span>
+              <strong>{tasks.length}</strong>
             </div>
           </div>
 
-          {filteredTasks.length === 0 ? (
-            <div className="empty-box">
-              <div className="empty-box-icon">
-                <CalendarDays size={28} />
+          <div className="planner-stat-card">
+            <div className="stat-icon">
+              <Check size={20} />
+            </div>
+
+            <div>
+              <span>Completed</span>
+              <strong>{completedTasks}</strong>
+            </div>
+          </div>
+
+          <div className="planner-stat-card">
+            <div className="stat-icon">
+              <CalendarDays size={20} />
+            </div>
+
+            <div>
+              <span>Today's Tasks</span>
+              <strong>{todayTasks.length}</strong>
+            </div>
+          </div>
+
+          <div className="planner-stat-card progress-stat">
+            <div className="stat-icon">
+              <span>{progress}%</span>
+            </div>
+
+            <div className="progress-stat-content">
+              <span>Overall Progress</span>
+
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        {/* CALENDAR */}
+
+        <section className="calendar-section">
+
+          <div className="calendar-header">
+
+            <div>
+              <h2>Study Calendar</h2>
+              <p>{weekLabel}</p>
+            </div>
+
+            <div className="calendar-controls">
+
+              <button
+                onClick={goToCurrentWeek}
+                className="today-btn"
+              >
+                Today
+              </button>
+
+              <button
+                onClick={previousWeek}
+                aria-label="Previous week"
+              >
+                <ChevronLeft size={18} />
+              </button>
+
+              <button
+                onClick={nextWeek}
+                aria-label="Next week"
+              >
+                <ChevronRight size={18} />
+              </button>
+
+            </div>
+
+          </div>
+
+          <div className="planner-view-tabs">
+
+            <button
+              className={view === "week" ? "active" : ""}
+              onClick={() => setView("week")}
+            >
+              Week
+            </button>
+
+            <button
+              className={view === "today" ? "active" : ""}
+              onClick={() => setView("today")}
+            >
+              Today
+            </button>
+
+            <button
+              className={view === "all" ? "active" : ""}
+              onClick={() => setView("all")}
+            >
+              All Tasks
+            </button>
+
+          </div>
+
+          {view === "week" && (
+            <div className="calendar-grid">
+
+              {weekDays.map((day) => {
+                const dateKey = getDateKey(day);
+                const dayTasks = getTasksForDay(day);
+                const isToday = dateKey === today;
+
+                return (
+                  <div
+                    className={`calendar-day ${
+                      isToday ? "calendar-day-today" : ""
+                    }`}
+                    key={dateKey}
+                  >
+
+                    <div className="calendar-day-header">
+
+                      <div>
+                        <span>
+                          {day.toLocaleDateString("en-US", {
+                            weekday: "short",
+                          })}
+                        </span>
+
+                        <strong>{day.getDate()}</strong>
+                      </div>
+
+                      {isToday && <small>Today</small>}
+
+                    </div>
+
+                    <div className="calendar-day-tasks">
+
+                      {dayTasks.length === 0 ? (
+                        <button
+                          className="calendar-add-task"
+                          onClick={() => {
+                            setForm({
+                              title: "",
+                              subject: "",
+                              task_date: dateKey,
+                              start_time: "",
+                              end_time: "",
+                              priority: "medium",
+                            });
+
+                            setEditingTask(null);
+                            setShowForm(true);
+                          }}
+                        >
+                          <Plus size={14} />
+                          Add task
+                        </button>
+                      ) : (
+                        <>
+                          {dayTasks.map((task) => (
+                            <div
+                              className={`calendar-task ${
+                                task.completed
+                                  ? "calendar-task-completed"
+                                  : ""
+                              }`}
+                              key={task.id}
+                            >
+
+                              <button
+                                className={`calendar-task-check ${
+                                  task.completed ? "checked" : ""
+                                }`}
+                                onClick={() => toggleTask(task)}
+                              >
+                                {task.completed && (
+                                  <Check size={12} />
+                                )}
+                              </button>
+
+                              <div
+                                className="calendar-task-info"
+                                onClick={() => openEditForm(task)}
+                              >
+                                <strong>{task.title}</strong>
+
+                                {task.start_time && (
+                                  <span>
+                                    <Clock size={12} />
+                                    {formatTime(task.start_time)}
+                                  </span>
+                                )}
+                              </div>
+
+                            </div>
+                          ))}
+
+                          <button
+                            className="calendar-add-task"
+                            onClick={() => {
+                              setForm({
+                                title: "",
+                                subject: "",
+                                task_date: dateKey,
+                                start_time: "",
+                                end_time: "",
+                                priority: "medium",
+                              });
+
+                              setEditingTask(null);
+                              setShowForm(true);
+                            }}
+                          >
+                            <Plus size={14} />
+                            Add
+                          </button>
+                        </>
+                      )}
+
+                    </div>
+
+                  </div>
+                );
+              })}
+
+            </div>
+          )}
+
+          {view === "today" && (
+            <div className="calendar-task-list-view">
+
+              {todayTasks.length === 0 ? (
+                <div className="empty-planner">
+                  <div className="empty-icon">
+                    <CalendarDays size={35} />
+                  </div>
+
+                  <h3>No tasks for today</h3>
+
+                  <p>
+                    Your schedule is clear. Add a study task to get started.
+                  </p>
+
+                  <button
+                    className="empty-add-btn"
+                    onClick={() => {
+                      setForm({
+                        title: "",
+                        subject: "",
+                        task_date: today,
+                        start_time: "",
+                        end_time: "",
+                        priority: "medium",
+                      });
+
+                      setEditingTask(null);
+                      setShowForm(true);
+                    }}
+                  >
+                    <Plus size={18} />
+                    Add Today's Task
+                  </button>
+                </div>
+              ) : (
+                <div className="tasks-list">
+                  {todayTasks.map((task) => (
+                    <article
+                      className={`study-task-card ${
+                        task.completed ? "task-completed" : ""
+                      }`}
+                      key={task.id}
+                    >
+
+                      <button
+                        className={`task-check ${
+                          task.completed ? "checked" : ""
+                        }`}
+                        onClick={() => toggleTask(task)}
+                      >
+                        {task.completed && <Check size={16} />}
+                      </button>
+
+                      <div className="task-main">
+
+                        <div className="task-top">
+
+                          <div>
+                            <h3>{task.title}</h3>
+
+                            {task.subject && (
+                              <span className="task-subject">
+                                {task.subject}
+                              </span>
+                            )}
+                          </div>
+
+                          <span
+                            className={`priority-badge priority-${task.priority}`}
+                          >
+                            {task.priority}
+                          </span>
+
+                        </div>
+
+                        <div className="task-details">
+
+                          <span>
+                            <CalendarDays size={15} />
+                            {formatDate(task.task_date)}
+                          </span>
+
+                          {task.start_time && (
+                            <span>
+                              <Clock size={15} />
+                              {formatTime(task.start_time)}
+                            </span>
+                          )}
+
+                        </div>
+
+                      </div>
+
+                      <div className="task-actions">
+
+                        <button
+                          onClick={() => openEditForm(task)}
+                        >
+                          <Edit3 size={17} />
+                        </button>
+
+                        <button
+                          onClick={() => deleteTask(task.id)}
+                        >
+                          <Trash2 size={17} />
+                        </button>
+
+                      </div>
+
+                    </article>
+                  ))}
+                </div>
+              )}
+
+            </div>
+          )}
+
+          {view === "all" && (
+            <div className="calendar-task-list-view">
+
+              {tasks.length === 0 ? (
+                <div className="empty-planner">
+                  <div className="empty-icon">
+                    <CalendarDays size={35} />
+                  </div>
+
+                  <h3>Your planner is empty</h3>
+
+                  <p>
+                    Add your first study task and start building your study routine.
+                  </p>
+
+                  <button
+                    className="empty-add-btn"
+                    onClick={() => openAddForm()}
+                  >
+                    <Plus size={18} />
+                    Add Your First Task
+                  </button>
+                </div>
+              ) : (
+                <div className="tasks-list">
+                  {tasks.map((task) => (
+                    <article
+                      className={`study-task-card ${
+                        task.completed ? "task-completed" : ""
+                      }`}
+                      key={task.id}
+                    >
+
+                      <button
+                        className={`task-check ${
+                          task.completed ? "checked" : ""
+                        }`}
+                        onClick={() => toggleTask(task)}
+                      >
+                        {task.completed && <Check size={16} />}
+                      </button>
+
+                      <div className="task-main">
+
+                        <div className="task-top">
+
+                          <div>
+                            <h3>{task.title}</h3>
+
+                            {task.subject && (
+                              <span className="task-subject">
+                                {task.subject}
+                              </span>
+                            )}
+                          </div>
+
+                          <span
+                            className={`priority-badge priority-${task.priority}`}
+                          >
+                            {task.priority}
+                          </span>
+
+                        </div>
+
+                        <div className="task-details">
+
+                          <span>
+                            <CalendarDays size={15} />
+                            {formatDate(task.task_date)}
+                          </span>
+
+                          {task.start_time && (
+                            <span>
+                              <Clock size={15} />
+                              {formatTime(task.start_time)}
+                            </span>
+                          )}
+
+                        </div>
+
+                      </div>
+
+                      <div className="task-actions">
+
+                        <button
+                          onClick={() => openEditForm(task)}
+                        >
+                          <Edit3 size={17} />
+                        </button>
+
+                        <button
+                          onClick={() => deleteTask(task.id)}
+                        >
+                          <Trash2 size={17} />
+                        </button>
+
+                      </div>
+
+                    </article>
+                  ))}
+                </div>
+              )}
+
+            </div>
+          )}
+
+        </section>
+
+        {/* TASK SECTION */}
+
+        <section className="tasks-section">
+
+          <div className="tasks-section-header">
+            <div>
+              <h2>Your Study Tasks</h2>
+              <p>
+                {tasks.length === 0
+                  ? "You haven't added any study tasks yet."
+                  : `${tasks.length} ${
+                      tasks.length === 1 ? "task" : "tasks"
+                    } in your planner.`}
+              </p>
+            </div>
+          </div>
+
+          {/* EMPTY STATE */}
+
+          {tasks.length === 0 ? (
+            <div className="empty-planner">
+              <div className="empty-icon">
+                <CalendarDays size={35} />
               </div>
 
-              <h3>No study tasks yet</h3>
+              <h3>Your planner is empty</h3>
+
               <p>
-                Add a task and start planning your study time.
+                Add your first study task and start building
+                your study routine.
               </p>
 
               <button
-                className="empty-action"
-                onClick={openNewTask}
+                className="empty-add-btn"
+                onClick={openAddForm}
               >
-                <Plus size={17} />
-                Add Study Task
+                <Plus size={18} />
+                Add Your First Task
               </button>
             </div>
           ) : (
-            <div className="task-list">
+            <div className="tasks-list">
 
-              {filteredTasks.map((task) => (
-                <div
-                  className={`task-card ${
-                    task.completed ? 'completed' : ''
+              {tasks.map((task) => (
+                <article
+                  className={`study-task-card ${
+                    task.completed ? "task-completed" : ""
                   }`}
                   key={task.id}
                 >
 
                   <button
                     className={`task-check ${
-                      task.completed ? 'checked' : ''
+                      task.completed ? "checked" : ""
                     }`}
-                    onClick={() => toggleTask(task.id)}
-                    aria-label="Complete task"
+                    onClick={() => toggleTask(task)}
+                    aria-label={
+                      task.completed
+                        ? "Mark task incomplete"
+                        : "Mark task complete"
+                    }
                   >
                     {task.completed && <Check size={16} />}
                   </button>
 
-                  <div className="task-info">
-                    <div className="task-title-row">
-                      <h3>{task.title}</h3>
+                  <div className="task-main">
+
+                    <div className="task-top">
+
+                      <div>
+                        <h3>{task.title}</h3>
+
+                        {task.subject && (
+                          <span className="task-subject">
+                            {task.subject}
+                          </span>
+                        )}
+                      </div>
 
                       <span
-                        className={`priority ${task.priority.toLowerCase()}`}
+                        className={`priority-badge priority-${task.priority}`}
                       >
                         {task.priority}
                       </span>
+
                     </div>
 
-                    <div className="task-meta">
-                      <span>
-                        <BookOpen size={14} />
-                        {task.subject}
-                      </span>
+                    <div className="task-details">
 
                       <span>
-                        <CalendarDays size={14} />
-                        {formatDate(task.date)}
+                        <CalendarDays size={15} />
+                        {formatDate(task.task_date)}
                       </span>
 
-                      {task.start && task.end && (
+                      {task.start_time && (
                         <span>
-                          <Clock3 size={14} />
-                          {formatTime(task.start)} –{' '}
-                          {formatTime(task.end)}
+                          <Clock size={15} />
+                          {formatTime(task.start_time)}
+
+                          {task.end_time &&
+                            ` - ${formatTime(task.end_time)}`}
                         </span>
                       )}
+
                     </div>
+
                   </div>
 
                   <div className="task-actions">
+
                     <button
-                      onClick={() => openEditTask(task)}
+                      onClick={() => openEditForm(task)}
                       aria-label="Edit task"
                     >
-                      <Pencil size={16} />
+                      <Edit3 size={17} />
                     </button>
 
                     <button
-                      className="task-delete"
                       onClick={() => deleteTask(task.id)}
                       aria-label="Delete task"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={17} />
                     </button>
+
                   </div>
 
-                </div>
+                </article>
               ))}
 
             </div>
           )}
 
-        </div>
+        </section>
 
-        {/* Goals */}
+      </div>
 
-        <aside className="goals-section">
+      {/* ADD / EDIT MODAL */}
 
-          <div className="section-heading">
-            <div>
-              <h2>My Goals</h2>
-              <p>Keep your eyes on the target.</p>
-            </div>
+      {showForm && (
+        <div className="planner-modal-overlay">
 
-            <button
-              className="small-add-btn"
-              onClick={() => setShowGoalModal(true)}
-              aria-label="Add goal"
-            >
-              <Plus size={18} />
-            </button>
-          </div>
+          <div className="planner-modal">
 
-          {goals.length === 0 ? (
-            <div className="goal-empty">
-              <Target size={26} />
-              <h3>No goals yet</h3>
-              <p>Create an academic goal to start tracking it.</p>
+            <div className="modal-header">
+
+              <div>
+                <span className="modal-label">
+                  {editingTask ? "EDIT TASK" : "NEW TASK"}
+                </span>
+
+                <h2>
+                  {editingTask
+                    ? "Edit study task"
+                    : "Add study task"}
+                </h2>
+              </div>
 
               <button
-                className="empty-action"
-                onClick={() => setShowGoalModal(true)}
+                className="modal-close"
+                onClick={closeForm}
+                disabled={saving}
               >
-                <Plus size={17} />
-                Create Goal
+                <X size={20} />
               </button>
+
             </div>
-          ) : (
-            <div className="goal-list">
 
-              {goals.map((goal) => (
-                <div className="goal-card" key={goal.id}>
+            <form onSubmit={handleSubmit}>
 
-                  <div className="goal-top">
-                    <div className="goal-icon">
-                      <Target size={20} />
-                    </div>
+              <div className="form-group">
+                <label htmlFor="title">
+                  Task title
+                </label>
 
-                    <button
-                      className="goal-delete"
-                      onClick={() => deleteGoal(goal.id)}
-                      aria-label="Delete goal"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
+                <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  placeholder="e.g. Study Mathematics"
+                  value={form.title}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-                  <span className="goal-subject">
-                    {goal.subject}
-                  </span>
+              <div className="form-group">
+                <label htmlFor="subject">
+                  Subject
+                </label>
 
-                  <h3>{goal.title}</h3>
+                <input
+                  id="subject"
+                  name="subject"
+                  type="text"
+                  placeholder="e.g. Mathematics"
+                  value={form.subject}
+                  onChange={handleChange}
+                />
+              </div>
 
-                  {goal.target && (
-                    <p className="goal-target">
-                      Target: {formatDate(goal.target)}
-                    </p>
-                  )}
+              <div className="form-row">
 
-                  <div className="goal-progress-info">
-                    <span>Progress</span>
-                    <strong>{goal.progress}%</strong>
-                  </div>
-
-                  <div className="goal-progress">
-                    <div
-                      style={{
-                        width: `${goal.progress}%`,
-                      }}
-                    />
-                  </div>
+                <div className="form-group">
+                  <label htmlFor="task_date">
+                    Date
+                  </label>
 
                   <input
-                    className="goal-slider"
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={goal.progress}
-                    onChange={(e) =>
-                      updateGoalProgress(
-                        goal.id,
-                        e.target.value
-                      )
-                    }
+                    id="task_date"
+                    name="task_date"
+                    type="date"
+                    value={form.task_date}
+                    onChange={handleChange}
+                    required
                   />
-
-                </div>
-              ))}
-
-            </div>
-          )}
-
-        </aside>
-
-      </section>
-
-      {/* Recent effort */}
-
-      <section className="effort-section">
-
-        <div className="section-heading">
-          <div>
-            <h2>Recent Study Effort</h2>
-            <p>Your logged study sessions.</p>
-          </div>
-
-          <span className="session-count">
-            {completedSessions} sessions
-          </span>
-        </div>
-
-        {sessions.length === 0 ? (
-          <div className="effort-empty">
-            <Clock3 size={25} />
-            <p>
-              No study sessions logged yet. Start tracking
-              your effort.
-            </p>
-          </div>
-        ) : (
-          <div className="session-list">
-
-            {sessions.slice(0, 6).map((session) => (
-              <div className="session-row" key={session.id}>
-
-                <div className="session-subject">
-                  <div className="session-icon">
-                    <BookOpen size={18} />
-                  </div>
-
-                  <div>
-                    <strong>{session.subject}</strong>
-                    <span>{formatDate(session.date)}</span>
-                  </div>
                 </div>
 
-                <strong className="session-duration">
-                  {session.minutes} min
-                </strong>
+                <div className="form-group">
+                  <label htmlFor="priority">
+                    Priority
+                  </label>
+
+                  <select
+                    id="priority"
+                    name="priority"
+                    value={form.priority}
+                    onChange={handleChange}
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
 
               </div>
-            ))}
 
-          </div>
-        )}
+              <div className="form-row">
 
-      </section>
+                <div className="form-group">
+                  <label htmlFor="start_time">
+                    Start time
+                  </label>
 
-      {/* Task Modal */}
+                  <input
+                    id="start_time"
+                    name="start_time"
+                    type="time"
+                    value={form.start_time}
+                    onChange={handleChange}
+                  />
+                </div>
 
-      {showTaskModal && (
-        <div className="modal-overlay">
-          <div className="modal-card">
+                <div className="form-group">
+                  <label htmlFor="end_time">
+                    End time
+                  </label>
 
-            <div className="modal-header">
-              <div>
-                <h2>
-                  {editingTaskId
-                    ? 'Edit Study Task'
-                    : 'Add Study Task'}
-                </h2>
-                <p>Plan your next study session.</p>
+                  <input
+                    id="end_time"
+                    name="end_time"
+                    type="time"
+                    value={form.end_time}
+                    onChange={handleChange}
+                  />
+                </div>
+
               </div>
 
-              <button
-                className="modal-close"
-                onClick={closeTaskModal}
-              >
-                <X size={20} />
-              </button>
-            </div>
+              <div className="modal-actions">
 
-            <div className="form-group">
-              <label>Task</label>
-              <input
-                type="text"
-                placeholder="e.g. Read Chapter 4"
-                value={taskTitle}
-                onChange={(e) =>
-                  setTaskTitle(e.target.value)
-                }
-              />
-            </div>
-
-            <div className="form-grid">
-
-              <div className="form-group">
-                <label>Subject</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Chemistry"
-                  value={taskSubject}
-                  onChange={(e) =>
-                    setTaskSubject(e.target.value)
-                  }
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Date</label>
-                <input
-                  type="date"
-                  value={taskDate}
-                  onChange={(e) =>
-                    setTaskDate(e.target.value)
-                  }
-                />
-              </div>
-
-            </div>
-
-            <div className="form-grid">
-
-              <div className="form-group">
-                <label>Start Time</label>
-                <input
-                  type="time"
-                  value={taskStart}
-                  onChange={(e) =>
-                    setTaskStart(e.target.value)
-                  }
-                />
-              </div>
-
-              <div className="form-group">
-                <label>End Time</label>
-                <input
-                  type="time"
-                  value={taskEnd}
-                  onChange={(e) =>
-                    setTaskEnd(e.target.value)
-                  }
-                />
-              </div>
-
-            </div>
-
-            <div className="form-group">
-              <label>Priority</label>
-
-              <select
-                value={taskPriority}
-                onChange={(e) =>
-                  setTaskPriority(e.target.value)
-                }
-              >
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-              </select>
-            </div>
-
-            <div className="modal-actions">
-              <button
-                className="cancel-btn"
-                onClick={closeTaskModal}
-              >
-                Cancel
-              </button>
-
-              <button
-                className="save-btn"
-                onClick={saveTask}
-                disabled={!taskTitle.trim() || !taskDate}
-              >
-                {editingTaskId ? 'Save Changes' : 'Add Task'}
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={closeForm}
+                  disabled={saving}
+                >
+                  Cancel
                 </button>
-            </div>
 
-          </div>
-        </div>
-      )}
+                <button
+                  type="submit"
+                  className="save-task-btn"
+                  disabled={saving}
+                >
+                  {saving
+                    ? "Saving..."
+                    : editingTask
+                    ? "Save Changes"
+                    : "Add Task"}
+                </button>
 
-      {/* Goal Modal */}
-
-      {showGoalModal && (
-        <div className="modal-overlay">
-          <div className="modal-card">
-
-            <div className="modal-header">
-              <div>
-                <h2>Create Academic Goal</h2>
-                <p>Set something meaningful to work toward.</p>
               </div>
 
-              <button
-                className="modal-close"
-                onClick={() => setShowGoalModal(false)}
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="form-group">
-              <label>Goal</label>
-              <input
-                type="text"
-                placeholder="e.g. Score 280+ in JAMB"
-                value={goalTitle}
-                onChange={(e) =>
-                  setGoalTitle(e.target.value)
-                }
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Subject / Category</label>
-              <input
-                type="text"
-                placeholder="e.g. JAMB"
-                value={goalSubject}
-                onChange={(e) =>
-                  setGoalSubject(e.target.value)
-                }
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Target Date</label>
-              <input
-                type="date"
-                value={goalTarget}
-                onChange={(e) =>
-                  setGoalTarget(e.target.value)
-                }
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Current Progress: {goalProgress}%</label>
-
-              <input
-                className="goal-create-slider"
-                type="range"
-                min="0"
-                max="100"
-                value={goalProgress}
-                onChange={(e) =>
-                  setGoalProgress(e.target.value)
-                }
-              />
-            </div>
-
-            <div className="modal-actions">
-              <button
-                className="cancel-btn"
-                onClick={() => setShowGoalModal(false)}
-              >
-                Cancel
-              </button>
-
-              <button
-                className="save-btn"
-                onClick={createGoal}
-                disabled={!goalTitle.trim()}
-              >
-                Create Goal
-              </button>
-            </div>
+            </form>
 
           </div>
-        </div>
-      )}
 
-      {/* Study Session Modal */}
-
-      {showSessionModal && (
-        <div className="modal-overlay">
-          <div className="modal-card small-modal">
-
-            <div className="modal-header">
-              <div>
-                <h2>Log Study Session</h2>
-                <p>Record the effort you put in today.</p>
-              </div>
-
-              <button
-                className="modal-close"
-                onClick={() => setShowSessionModal(false)}
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="form-group">
-              <label>Subject</label>
-              <input
-                type="text"
-                placeholder="e.g. Mathematics"
-                value={sessionSubject}
-                onChange={(e) =>
-                  setSessionSubject(e.target.value)
-                }
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Study Time (minutes)</label>
-              <input
-                type="number"
-                min="1"
-                placeholder="e.g. 60"
-                value={sessionMinutes}
-                onChange={(e) =>
-                  setSessionMinutes(e.target.value)
-                }
-              />
-            </div>
-
-            <div className="modal-actions">
-              <button
-                className="cancel-btn"
-                onClick={() => setShowSessionModal(false)}
-              >
-                Cancel
-              </button>
-
-              <button
-                className="save-btn"
-                onClick={saveTask}
-                disabled={
-                  !sessionSubject.trim() ||
-                  !sessionMinutes
-                }
-              >
-                Log Session
-              </button>
-            </div>
-
-          </div>
         </div>
       )}
 
     </main>
-  )
-}
+  );
+};
 
-export default page
-
+export default page;

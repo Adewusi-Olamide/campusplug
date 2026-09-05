@@ -69,15 +69,15 @@ const page = () => {
             <Link href="/study-timer">
             <div className="d">
               <p className='clock'><Clock size={25} /></p>
-              <h2>Smart Study Timer</h2>
-              <p>Stay focused with the study timer feature and boost productivity.</p>
+              <h2>Smart Study Planner</h2>
+              <p>Stay focused with the study planner feature and boost productivity.</p>
             </div>
             </Link>
 
-            <Link href="/task">
+            <Link href="/tasks">
             <div className="d">
               <p className='check'><CheckSquare size={25} /></p>
-              <h2>Task & Goal Tracker</h2>
+              <h2>Tasks & Goal Tracker</h2>
               <p>Organize tasks, set goals, and track your daily progress.</p>
             </div>
             </Link>
@@ -90,11 +90,13 @@ const page = () => {
             </div>
             </Link>
 
+            <Link href="/exam-countdown">
             <div className="d">
               <p className='calendar'><Calendar size={25} /></p>
               <h2>Exam Countdown</h2>
               <p>Never miss a deadline with smart countdown reminders.</p>
             </div>
+            </Link>
 
           </div>
         </div>
