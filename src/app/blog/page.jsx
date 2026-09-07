@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import "./page.css";
 import Link from "next/link";
+import { articles } from "@/data/articles";
 
 const page = () => {
 
@@ -30,74 +31,7 @@ const page = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
 
-  const posts = [
-    {
-      id: 1,
-      slug: "how-to-study-smarter-and-not-just-harder",
-      title: "How to Study Smarter and Not Just Harder",
-      excerpt:
-        "Discover simple study strategies that can help you understand topics faster and remember what you learn for longer.",
-      category: "Study Tips",
-      date: "August 28, 2026",
-      readTime: "5 min read",
-      image: "/images/studysmarter.jpg",
-    },
-    {
-      id: 2,
-      slug: "how-to-prepare-for-your-next-exam",
-      title: "How to Prepare for Your Next Exam",
-      excerpt:
-        "A practical guide to organizing your revision, managing your time, and walking into your next exam prepared.",
-      category: "Exams",
-      date: "August 24, 2026",
-      readTime: "6 min read",
-      image: "/images/prepare.jpg",
-    },
-    {
-      id: 3,
-      slug: "5-ways-to-stay-focused-while-studying",
-      title: "5 Ways to Stay Focused While Studying",
-      excerpt:
-        "Struggling to concentrate? Try these simple techniques to make your study sessions more productive.",
-      category: "Productivity",
-      date: "August 20, 2026",
-      readTime: "4 min read",
-      image: "/images/focus.jpg",
-    },
-    {
-      id: 4,
-      slug: "why-flashcards-are-great-for-revision",
-      title: "Why Flashcards Are Great for Revision",
-      excerpt:
-        "Learn how active recall and flashcards can make revision more effective and less stressful.",
-      category: "Learning",
-      date: "August 17, 2026",
-      readTime: "4 min read",
-      image: "/images/flashcard.jpg",
-    },
-    {
-      id: 5,
-      slug: "building-better-study-habits",
-      title: "Building Better Study Habits",
-      excerpt:
-        "Small, consistent habits can make a huge difference in your academic journey. Here's where to start.",
-      category: "Study Tips",
-      date: "August 12, 2026",
-      readTime: "5 min read",
-      image: "/images/studyinghabit.jpg",
-    },
-    {
-      id: 6,
-      slug: "how-to-manage-your-time-as-a-student",
-      title: "How to Manage Your Time as a Student",
-      excerpt:
-        "Balance classes, assignments, revision, and your personal life with a simple approach to time management.",
-      category: "Productivity",
-      date: "August 8, 2026",
-      readTime: "7 min read",
-      image: "/images/time.jpg",
-    },
-  ];
+  const post = articles;
 
   const categories = [
     "All",
@@ -107,7 +41,7 @@ const page = () => {
     "Learning",
   ];
 
-  const filteredPosts = posts.filter((post) => {
+  const filteredPosts = post.filter((post) => {
     const matchesSearch =
       post.title.toLowerCase().includes(search.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(search.toLowerCase());
@@ -164,52 +98,6 @@ const page = () => {
 
       </section>
 
-      {/* FEATURED ARTICLE */}
-      {category === "All" && search === "" && (
-        <section className="featured-section">
-
-          <div className="featured-image">
-            <Image
-              src="/images/studentstudying.jpg"
-              alt="Student studying"
-              fill
-            />
-          </div>
-
-          <div className="featured-content">
-
-            <span className="post-category">
-              FEATURED
-            </span>
-
-            <h2>
-              Study smarter, stay consistent, and make your
-              academic journey easier.
-            </h2>
-
-            <p>
-              Your grades aren't only about how long you study.
-              Learn how effective study techniques, consistency,
-              and the right resources can change the way you learn.
-            </p>
-
-            <div className="post-info">
-              <span>CampusPlug Team</span>
-              <span>•</span>
-              <span>August 30, 2026</span>
-              <span>•</span>
-              <span>6 min read</span>
-            </div>
-
-            <button className="read-button">
-              Read article →
-            </button>
-
-          </div>
-
-        </section>
-      )}
-
       {/* ARTICLES */}
       <section className="blog-section">
 
@@ -234,7 +122,7 @@ const page = () => {
 
               <article
                 className="blog-card"
-                key={post.id}
+                key={post.slug}
               >
 
                 <div className="blog-card-image">
@@ -245,6 +133,7 @@ const page = () => {
                   />
                 </div>
 
+                <Link href={`/blog/${post.slug}`}>
                 <div className="blog-card-content">
 
                   <span className="post-category">
@@ -263,17 +152,16 @@ const page = () => {
                       <span>{post.readTime}</span>
                     </div>
 
-                    <Link href={`/blog/${post.slug}`}>
                     <button
                       aria-label={`Read ${post.title}`}
                     >
                       →
                     </button>
-                    </Link>
 
                   </div>
 
                 </div>
+                </Link>
 
               </article>
 
