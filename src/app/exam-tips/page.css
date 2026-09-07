@@ -1,0 +1,534 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --purple: #5532e9;
+    --purple-dark: #4320d0;
+    --navy: #101438;
+    --text: #171a36;
+    --muted: #666b82;
+    --border: #e8e8f1;
+    --bg: #ffffff;
+    --light-purple: #f6f3ff;
+}
+
+.exam-tips-page {
+  min-height: 100vh;
+  margin-top: 110px;
+  background: #ffffff;
+  color: #111827;
+}
+
+.exam-tips-container {
+  width: min(1180px, 92%);
+  margin: 0 auto;
+}
+
+/* HERO */
+
+.exam-tips-hero {
+  background: #0f172a;
+  color: white;
+  padding: 100px 0;
+}
+
+.exam-tips-hero-content {
+  max-width: 760px;
+}
+
+.exam-tips-badge,
+.exam-tips-section-heading span,
+.exam-tips-methods-heading span,
+.cbt-content > span,
+.exam-day-content > span,
+.exam-tips-final-card span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #2563eb;
+}
+
+.exam-tips-badge {
+  color: #60a5fa;
+  margin-bottom: 20px;
+}
+
+.exam-tips-hero h1 {
+  font-weight: bold;
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 1.02;
+  margin: 0;
+  letter-spacing: -2px;
+}
+
+.exam-tips-hero h1 span {
+  color: #60a5fa;
+}
+
+.exam-tips-hero p {
+  max-width: 650px;
+  color: #cbd5e1;
+  font-size: 18px;
+  line-height: 1.7;
+  margin: 25px 0 32px;
+}
+
+.exam-tips-hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.exam-tips-primary-btn,
+.exam-tips-secondary-btn,
+.cbt-btn,
+.exam-tips-final-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: 0.25s ease;
+}
+
+.exam-tips-primary-btn {
+  background: #2563eb;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 9px;
+}
+
+.exam-tips-primary-btn:hover {
+  transform: translateY(-2px);
+  background: #1d4ed8;
+}
+
+.exam-tips-secondary-btn {
+  border: 1px solid #475569;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 9px;
+}
+
+.exam-tips-secondary-btn:hover {
+  background: #1e293b;
+}
+
+/* GENERAL SECTIONS */
+
+.exam-tips-intro,
+.exam-tips-routine,
+.exam-tips-mistakes {
+  padding: 90px 0;
+}
+
+.exam-tips-section-heading {
+  max-width: 700px;
+  margin-bottom: 45px;
+}
+
+.exam-tips-section-heading h2,
+.exam-tips-methods-heading h2,
+.exam-day-content h2 {
+  font-weight: bold;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.12;
+  letter-spacing: -1px;
+  margin: 12px 0;
+  color: #111827;
+}
+
+.exam-tips-section-heading p,
+.exam-tips-methods-heading p,
+.exam-day-content p {
+  color: #64748b;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* PREPARATION CARDS */
+
+.exam-tips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.exam-tip-card {
+  padding: 28px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: white;
+  transition: 0.25s ease;
+}
+
+.exam-tip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 35px rgba(15, 23, 42, 0.09);
+}
+
+.exam-tip-icon {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.exam-tip-card h3,
+.study-method-item h3,
+.routine-card h3 {
+  margin: 0 0 10px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.exam-tip-card p,
+.study-method-item p,
+.routine-card p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+/* METHODS */
+
+.exam-tips-methods {
+  padding: 90px 0;
+  background: #f8fafc;
+}
+
+.exam-tips-methods-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 70px;
+  align-items: start;
+}
+
+.study-method-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.study-method-item {
+  display: flex;
+  gap: 18px;
+  padding: 22px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.study-method-number {
+  font-size: 13px;
+  font-weight: 800;
+  color: #2563eb;
+  min-width: 28px;
+}
+
+/* ROUTINE */
+
+.routine-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.routine-card {
+  padding: 25px;
+  border: 1px solid #e5e7eb;
+  border-radius: 15px;
+}
+
+.routine-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #2563eb;
+  margin-bottom: 28px;
+}
+
+.routine-card-top span {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* CBT */
+
+.exam-tips-cbt {
+  padding: 90px 0;
+}
+
+.cbt-card {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 35px;
+  padding: 50px;
+  background: #0f172a;
+  color: white;
+  border-radius: 20px;
+}
+
+.cbt-icon {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1e293b;
+  border-radius: 14px;
+  color: #60a5fa;
+}
+
+.cbt-content > span {
+  color: #60a5fa;
+}
+
+.cbt-content h2 {
+  font-weight: bold;
+  font-size: clamp(28px, 4vw, 42px);
+  margin: 12px 0;
+}
+
+.cbt-content > p {
+  color: #cbd5e1;
+  line-height: 1.7;
+  max-width: 700px;
+}
+
+.cbt-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 25px 0;
+  display: grid;
+  gap: 12px;
+}
+
+.cbt-content li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e2e8f0;
+}
+
+.cbt-btn {
+  background: #2563eb;
+  color: white;
+  padding: 13px 18px;
+  border-radius: 8px;
+}
+
+.cbt-btn:hover {
+  background: #1d4ed8;
+}
+
+/* MISTAKES */
+
+.mistakes-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.mistake-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.mistake-item svg {
+  flex-shrink: 0;
+  color: #f59e0b;
+  margin-top: 2px;
+}
+
+.mistake-item p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* EXAM DAY */
+
+.exam-tips-exam-day {
+  padding: 90px 0;
+  background: #f8fafc;
+}
+
+.exam-day-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 70px;
+}
+
+.exam-day-list {
+  display: grid;
+  gap: 12px;
+}
+
+.exam-day-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 17px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.exam-day-item svg {
+  flex-shrink: 0;
+  color: #2563eb;
+  margin-top: 2px;
+}
+
+.exam-day-item p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* FINAL */
+
+.exam-tips-final {
+  padding: 90px 0;
+}
+
+.exam-tips-final-card {
+  padding: 55px;
+  background: #eff6ff;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+}
+
+.exam-tips-final-card h2 {
+  font-weight: bold;
+  margin: 12px 0;
+  font-size: clamp(30px, 4vw, 45px);
+  line-height: 1.1;
+}
+
+.exam-tips-final-card p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.exam-tips-final-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 180px;
+}
+
+.exam-tips-final-actions a {
+  background: #2563eb;
+  color: white;
+  padding: 13px 18px;
+  border-radius: 8px;
+}
+
+.exam-tips-final-actions a:last-child {
+  background: white;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
+  .exam-tips-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .routine-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .exam-tips-methods-layout,
+  .exam-day-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .exam-tips-final-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 650px) {
+  .exam-tips-hero {
+    padding: 75px 0;
+  }
+
+  .exam-tips-intro,
+  .exam-tips-methods,
+  .exam-tips-routine,
+  .exam-tips-cbt,
+  .exam-tips-mistakes,
+  .exam-tips-exam-day,
+  .exam-tips-final {
+    padding: 65px 0;
+  }
+
+  .exam-tips-grid,
+  .routine-grid,
+  .mistakes-list {
+    grid-template-columns: 1fr;
+  }
+
+  .cbt-card {
+    grid-template-columns: 1fr;
+    padding: 30px;
+    gap: 20px;
+  }
+
+  .exam-tips-final-card {
+    padding: 35px 25px;
+  }
+}
+
+@media (max-width: 450px) {
+  .exam-tips-container {
+    width: 90%;
+  }
+
+  .exam-tips-hero h1 {
+    font-size: 43px;
+  }
+
+  .exam-tips-hero p {
+    font-size: 16px;
+  }
+
+  .exam-tips-primary-btn,
+  .exam-tips-secondary-btn {
+    width: 100%;
+  }
+
+  .exam-tip-card,
+  .routine-card {
+    padding: 22px;
+  }
+
+  .study-method-item {
+    padding: 18px;
+  }
+}

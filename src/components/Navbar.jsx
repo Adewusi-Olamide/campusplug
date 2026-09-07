@@ -68,7 +68,37 @@ const Navbar = () => {
       router.push("/notes");
     }
     else if (query === "study timer" || query === "my study timer" || query === "study timers" || query === "study timer and goal tracker" || query === "study timer & goal tracker") {
-      router.push("/study timer");
+      router.push("/study-timer");
+    }
+    else if (query === "tasks" || query === "my tasks" || query === "task" || query === "tasks" || query === "my task") {
+      router.push("/tasks");
+    }
+    else if (query === "syllabus" || query === "jamb syllabus" || query === "syllabus") {
+      router.push("/syllabus");
+    }
+    else if (query === "study guide" || query === "my study guide" || query === "study guides" || query === "study guides" ) {
+      router.push("/study-guide");
+    }
+    else if (query === "scholarship" || query === "scholarships" || query === "my scholarship") {
+      router.push("/scholarships");
+    }
+    else if (query === "textbook" || query === "textbooks" || query === "my textbook" || query === "my textbooks") {
+      router.push("/recommended-textbooks");
+    }
+    else if (query === "reset-password" || query === "reset" || query === "password reset") {
+      router.push("/reset-password");
+    }
+    else if (query === "focus" || query === "focus mode" || query === "focus-feature") {
+      router.push("/focus");
+    }
+    else if (query === "exam-tips" || query === "exam-tip") {
+      router.push("/exam-tips");
+    }
+    else if (query === "exam-history") {
+      router.push("/exam-history");
+    }
+    else if (query === "exam-countdown") {
+      router.push("/exam-countdown");
     }
     else {
       setNoResults(true);

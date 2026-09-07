@@ -75,7 +75,8 @@ const page = () => {
 
           <div className="content">
 
-            <div className="syllabus">
+            <Link className="syllabus" href="./syllabus">
+            <div>
               <p className="syllabus-img"><Notebook size={30} /></p>
               <h3>JAMB Syllabus</h3>
               <p> Official UTME syllabus for all subjects. Know  what to study and what to expect.</p>
@@ -84,8 +85,10 @@ const page = () => {
                 <button className="right">→</button>
               </div>
             </div>
+            </Link>
 
-            <div className="syllabus">
+            <Link className="syllabus" href="./study-guide">
+            <div>
               <p className="guide-img"><GraduationCap size={35} /></p>
               <h3>UTME Study Guides</h3>
               <p>Topic-by-topic study notes and explanations to help you  understand better.</p>
@@ -94,8 +97,10 @@ const page = () => {
                 <button className="right">→</button>
               </div>
             </div>
+            </Link>
 
-            <div className="syllabus">
+            <Link className="syllabus" href="./flashcard">
+            <div>
               <p className="flashcard-img"><Layers size={30} /></p>
               <h3>Flashcards</h3>
               <p>Flashcards improve memory, boost recalls, and make studying faster and easier</p>
@@ -104,8 +109,10 @@ const page = () => {
                 <button className="right">→</button>
               </div>
             </div>
+            </Link>
 
-            <div className="syllabus">
+            <Link className="syllabus" href="./exam-tips">
+            <div>
               <p className="tips-img"><Lightbulb size={30} /></p>
               <h3>Exam Preparation Tips</h3>
               <p>Smart strategies, time management and CBT tips to excel in your exams.</p>
@@ -114,6 +121,7 @@ const page = () => {
                 <button className="right">→</button>
               </div>
             </div>
+            </Link>
 
           </div>
 
@@ -121,17 +129,20 @@ const page = () => {
 
           <div className="content">
 
-            <div className="syllabus">
+            <Link className="syllabus" href="./recommended-textbooks">
+            <div>
               <p className="textbook-img"><BookOpenText size={30} /></p>
-              <h3>Recommended Textbooks</h3>
+              <h3> Textbooks</h3>
               <p>Best textbook for each subject recommended by top students and teachers.</p>
               <div className="button">
                 <button className="left">Textbooks</button>
                 <button className="right">→</button>
               </div>
             </div>
+            </Link>
 
-            <div className="syllabus">
+            <Link className="syllabus" href="./notes">
+            <div>
               <p className="tips-img"><Star size={30} /></p>
               <h3>Subject Revision Notes</h3>
               <p>Quick revision notes and key formulas to help you revise faster and smarter.</p>
@@ -140,8 +151,10 @@ const page = () => {
                 <button className="right">→</button>
               </div>
             </div>
+            </Link>
 
-            <div className="syllabus">
+            <Link className="syllabus" href="./scholarships">
+            <div>
               <p className="textbook-img"><Gift size={30} /></p>
               <h3>Scholarships in Nigeria</h3>
               <p>Latest  local and international scholarship for Nigerian students and applicants.</p>
@@ -150,8 +163,10 @@ const page = () => {
                 <button className="right">→</button>
               </div>
             </div>
+            </Link>
 
-            <div className="syllabus">
+            <Link className="syllabus" href="https://education.gov.ng/federal-scholarships-board/">
+            <div>
               <p className="syllabus-img"><Globe size={30} /></p>
               <h3>Official JAMB Resources</h3>
               <p>Important links to the official JAMB servicees, portals and helpfuul information.</p>
@@ -160,6 +175,7 @@ const page = () => {
                 <button className="right">→</button>
               </div>
             </div>
+            </Link>
 
           </div>
         </div>

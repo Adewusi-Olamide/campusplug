@@ -71,7 +71,7 @@ body
 
 .history-header h1 {
   margin: 0;
-  color: #0f172a;
+  color: var(--purple);
   font-size: clamp(32px, 5vw, 48px);
   line-height: 1.1;
   letter-spacing: -0.03em;
@@ -155,7 +155,7 @@ body
 
 .summary-card strong {
   display: block;
-  color: #0f172a;
+  color: var(--purple);
   font-size: 21px;
 }
 
@@ -165,7 +165,7 @@ body
 
 .section-heading h2 {
   margin: 0;
-  color: #0f172a;
+  color: var(--purple);
   font-size: 23px;
 }
 
@@ -213,7 +213,7 @@ body
 
 .attempt-info h3 {
   margin: 0 0 7px;
-  color: #0f172a;
+  color: var(--purple);
   font-weight: bold;
   font-size: 16px;
 }
@@ -240,7 +240,7 @@ body
 
 .attempt-score strong {
   display: block;
-  color: #0f172a;
+  color: var(--purple);
   font-size: 18px;
 }
 
@@ -289,7 +289,7 @@ body
 
 .history-state h2 {
   margin: 15px 0 5px;
-  color: #0f172a;
+  color: var(--purple);
   font-size: 21px;
 }
 
@@ -347,7 +347,7 @@ body
 }
 
 .error-state h2 {
-  color: #0f172a;
+  color: var(--purple);
 }
 
 @keyframes spin {
