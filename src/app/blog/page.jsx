@@ -33,6 +33,7 @@ const page = () => {
   const posts = [
     {
       id: 1,
+      slug: "how-to-study-smarter-and-not-just-harder",
       title: "How to Study Smarter and Not Just Harder",
       excerpt:
         "Discover simple study strategies that can help you understand topics faster and remember what you learn for longer.",
@@ -43,6 +44,7 @@ const page = () => {
     },
     {
       id: 2,
+      slug: "how-to-prepare-for-your-next-exam",
       title: "How to Prepare for Your Next Exam",
       excerpt:
         "A practical guide to organizing your revision, managing your time, and walking into your next exam prepared.",
@@ -53,6 +55,7 @@ const page = () => {
     },
     {
       id: 3,
+      slug: "5-ways-to-stay-focused-while-studying",
       title: "5 Ways to Stay Focused While Studying",
       excerpt:
         "Struggling to concentrate? Try these simple techniques to make your study sessions more productive.",
@@ -63,6 +66,7 @@ const page = () => {
     },
     {
       id: 4,
+      slug: "why-flashcards-are-great-for-revision",
       title: "Why Flashcards Are Great for Revision",
       excerpt:
         "Learn how active recall and flashcards can make revision more effective and less stressful.",
@@ -73,6 +77,7 @@ const page = () => {
     },
     {
       id: 5,
+      slug: "building-better-study-habits",
       title: "Building Better Study Habits",
       excerpt:
         "Small, consistent habits can make a huge difference in your academic journey. Here's where to start.",
@@ -83,6 +88,7 @@ const page = () => {
     },
     {
       id: 6,
+      slug: "how-to-manage-your-time-as-a-student",
       title: "How to Manage Your Time as a Student",
       excerpt:
         "Balance classes, assignments, revision, and your personal life with a simple approach to time management.",
@@ -257,11 +263,13 @@ const page = () => {
                       <span>{post.readTime}</span>
                     </div>
 
+                    <Link href={`/blog/${post.slug}`}>
                     <button
                       aria-label={`Read ${post.title}`}
                     >
                       →
                     </button>
+                    </Link>
 
                   </div>
 
