@@ -135,7 +135,7 @@ const Page = () => {
             </div>
 
             {/* Social Signup */}
-            <div className="social-buttons">
+            {/* <div className="social-buttons">
               <button
                 type="button"
                 className="social-btn github-btn"
@@ -144,7 +144,7 @@ const Page = () => {
                 <FaGithub />
                 Continue with GitHub
               </button>
-            </div>
+            </div> */}
 
             {error && (
               <p className="password-error">
