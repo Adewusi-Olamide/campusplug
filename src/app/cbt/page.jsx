@@ -2,6 +2,7 @@
 import { createClient } from "@/lib/supabase/client";
 import React, { useEffect, useMemo, useState } from "react";
 import "./page.css";
+import { trackActivity } from "@/lib/trackActivity";
 
 const SUBJECTS = [
   "English Language",
@@ -400,6 +401,7 @@ const QUESTION_BANK = {
 const EXAM_DURATION = 30 * 60;
 
 const page = () => {
+  trackActivity("cbt");
   const [stage, setStage] = useState("setup");
 
   const [selectedSubjects, setSelectedSubjects] = useState([

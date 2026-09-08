@@ -13,8 +13,11 @@ import {
 } from 'lucide-react'
 import './page.css'
 import { createClient } from '@/lib/supabase/client'
+import { trackActivity } from '@/lib/trackActivity'
+
 
 const page = () => {
+  trackActivity("notes");
   const supabase = createClient()
 
   const [notes, setNotes] = useState([])

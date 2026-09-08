@@ -37,7 +37,7 @@ const Navbar = () => {
     else if (query === "resources" || query === "resource") {
       router.push("/resources");
     }
-    else if (query === "blog") {
+    else if (query === "blogs" || query === "my blog" || query === "my blogs"  || query === "articles" || query === "article") {
       router.push("/blog");
     }
     else if (query === "about" || query === "about us") {

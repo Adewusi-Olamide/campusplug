@@ -13,8 +13,10 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import './page.css'
+import { trackActivity } from '@/lib/trackActivity'
 
 const page = () => {
+  trackActivity("flashcard");
   const supabase = createClient()
 
   const [decks, setDecks] = useState([])

@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from "react";
 import "./page.css";
 import { GraduationCap } from "lucide-react";
+import { trackActivity } from "@/lib/trackActivity";
 
 const page = () => {
+  trackActivity("calculator");
   const [display, setDisplay] = useState("0");
   const [expression, setExpression] = useState("");
   const [history, setHistory] = useState([]);

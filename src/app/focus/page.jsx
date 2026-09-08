@@ -11,10 +11,12 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import './page.css'
+import { trackActivity } from '@/lib/trackActivity'
 
 const TIMER_PRESETS = [25, 45, 60]
 
 const page = () => {
+  trackActivity("focus");
   const supabase = createClient()
 
   const [selectedMinutes, setSelectedMinutes] = useState(25)

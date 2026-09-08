@@ -35,14 +35,14 @@ const tools = [
     description:
       "Calculate your GPA quickly and keep track of your academic performance.",
     icon: Calculator,
-    href: "/tools/calculator",
+    href: "/calculator",
   },
   {
     title: "Exam Countdown",
     description:
       "Keep track of important exams and see exactly how much time is left.",
     icon: Timer,
-    href: "/tools/exam-countdown",
+    href: "/exam-countdown",
   },
   {
     title: "Notes",
@@ -56,7 +56,7 @@ const tools = [
     description:
       "Review important concepts and test yourself with quick flashcards.",
     icon: Layers3,
-    href: "/flashcards",
+    href: "/flashcard",
   },
   {
     title: "Focus Mode",

@@ -17,8 +17,10 @@ import {
 import { createClient } from "@/lib/supabase/client";
 
 import "./page.css";
+import { trackActivity } from "@/lib/trackActivity";
 
 const page = () => {
+  trackActivity("tasks");
   const supabase = createClient();
   const [user, setUser] = useState(null);
   const [tasks, setTasks] = useState([]);
