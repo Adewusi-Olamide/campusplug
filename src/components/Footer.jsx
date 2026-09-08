@@ -40,9 +40,9 @@ const Footer = () => {
           <h3>Resources</h3>
 
           <Link href="/resources">Study Resources</Link>
-          <Link href="/tools/cbt">CBT Practice</Link>
-          <Link href="/tools/flashcards">Flashcards</Link>
-          <Link href="/tools/calculator">Calculator</Link>
+          <Link href="/cbt">CBT Practice</Link>
+          <Link href="/flashcards">Flashcards</Link>
+          <Link href="/calculator">Calculator</Link>
         </div>
 
         {/* Account */}
@@ -50,7 +50,7 @@ const Footer = () => {
           <h3>Account</h3>
 
           <Link href="/profile">Profile</Link>
-          <Link href="/login">Login</Link>
+          <Link href="signin">Login</Link>
           <Link href="/signup">Create Account</Link>
         </div>
 
