@@ -1,84 +1,81 @@
-'use client'
-import React from 'react'
-import './Footer.css'
-import Link from 'next/link'
-import { GraduationCapIcon } from 'lucide-react'
-import "react-icons/fa";
-import { FaTiktok, FaInstagram } from 'react-icons/fa'
-import { FaXTwitter } from 'react-icons/fa6'
-import { FaYoutube } from 'react-icons/fa'
+"use client";
 
+import React from "react";
+import Link from "next/link";
+import "./Footer.css";
 
 const Footer = () => {
+  const openCookieSettings = () => {
+    window.dispatchEvent(new Event("openCookieSettings"));
+  };
+
   return (
-    <div>
+    <footer className="footer">
+      <div className="footer-container">
 
-      <div className="ctn">
-        <div className="footer">
+        {/* Brand */}
+        <div className="footer-brand">
+          <Link href="/" className="footer-logo">
+            <span>CampusPlug</span>
+          </Link>
 
-          <div className="left">
+          <p>
+            Your all-in-one student platform for smarter studying,
+            better organization, and academic success.
+          </p>
+        </div>
 
-            <Link href="/">
-              <h2><GraduationCapIcon id="logo" size={50} /><span className="campusplug">CampusPlug</span></h2>
-            </Link>
+        {/* Quick Links */}
+        <div className="footer-column">
+          <h3>Quick Links</h3>
 
-            <p id="p">Your all-in-one study companion</p>
+          <Link href="/">Home</Link>
+          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/tools">Tools</Link>
+          <Link href="/blog">Blog</Link>
+        </div>
 
-            <p id="p">© {new Date().getFullYear()} CampusPlug. All rights reserved</p>
+        {/* Resources */}
+        <div className="footer-column">
+          <h3>Resources</h3>
 
-          </div>
+          <Link href="/resources">Study Resources</Link>
+          <Link href="/tools/cbt">CBT Practice</Link>
+          <Link href="/tools/flashcards">Flashcards</Link>
+          <Link href="/tools/calculator">Calculator</Link>
+        </div>
 
-          <div className="center">
+        {/* Account */}
+        <div className="footer-column">
+          <h3>Account</h3>
 
-            <div className="header">
-              <h1>Product</h1>
-              <p>Features</p>
-              <p>Tools</p>
-              <p>Pricing</p>
-              <p>Changelog</p>
-            </div>
+          <Link href="/profile">Profile</Link>
+          <Link href="/login">Login</Link>
+          <Link href="/signup">Create Account</Link>
+        </div>
 
-            <div className="header">
-              <h1>Company</h1>
-              <p>About Us</p>
-              <p>Blog</p>
-              <p>Resources</p>
-              <p>Contact</p>
-            </div>
+      </div>
 
-            <div className="header">
-              <h1>Resources</h1>
-              <p>Study Tips</p>
-              <p>Guides</p>
-              <p>Help Center</p>
-              <p>Community</p>
-            </div>
-    
-          </div>
+      <div className="footer-bottom">
+        <p>© {new Date().getFullYear()} CampusPlug. All rights reserved.</p>
 
-          <div className="right">
-            <h1>Follow Us</h1>
+        <div className="footer-legal">
+          <Link href="/privacy-policy">Privacy Policy</Link>
+          <Link href="/cookie-policy">Cookie Policy</Link>
+          <Link href="/terms">Terms & Conditions</Link>
+          <Link href="/disclaimer">Disclaimer</Link>
 
-            <div className="socials">
-              <p><FaXTwitter  size={15} /></p>
-              <p><FaTiktok size={15} /></p>
-              <p><FaYoutube size={15} /></p>
-              <p><FaInstagram size={15} /></p>
-              
-            </div>
-
-            <div className="privacy">
-              <p>Privacy Policy</p>
-              <p id="terms">Terms of Service</p>
-            </div>
-
-          </div>
-
+          <button
+            type="button"
+            className="footer-cookie-settings"
+            onClick={openCookieSettings}
+          >
+            Cookie Settings
+          </button>
         </div>
       </div>
-      
-    </div>
-  )
-}
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;
