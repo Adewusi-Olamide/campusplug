@@ -253,8 +253,8 @@ const Page = () => {
                 <input type="checkbox" id="terms" required />
 
                 <label htmlFor="terms">
-                  I agree to the <Link href="#">Terms of Service</Link> and{' '}
-                  <Link href="#">Privacy Policy</Link>
+                  I agree to the <Link href="terms">Terms of Service</Link> and{' '}
+                  <Link href="privacy-policy">Privacy Policy</Link>
                 </label>
               </div>
 
