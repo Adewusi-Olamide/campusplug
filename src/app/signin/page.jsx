@@ -139,14 +139,6 @@ const page = () => {
           <span>or</span>
         </div>
 
-        <div className="social-buttons">
-
-          <button onClick={handleGithubSignup} type="button" className="social-button">
-            <span className="github-icon"><FaGithub /></span>
-            Continue with GitHub
-          </button>
-        </div>
-
         <p className="signup-link">
           Don't have an account?{' '}
           <Link href="/signup">Create one</Link>

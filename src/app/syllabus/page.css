@@ -547,6 +547,18 @@
     padding-top: 5px;
   }
 
+  .syllabus-categories {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .syllabus-categories button
+  {
+    width: 100%;
+    min-width: 0;
+  }
+
 }
 
 
@@ -574,5 +586,18 @@
   font-weight: bold;
     font-size: 18px;
   }
+  
+  .syllabus-categories {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .syllabus-categories button
+  {
+    width: 100%;
+    min-width: 0;
+  }
+
 
 }

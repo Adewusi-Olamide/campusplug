@@ -411,7 +411,9 @@ const Page = () => {
 
             {subjectGuides.map((subject) => (
 
-              <div className="subject-guide-card" key={subject.title}>
+
+              <Link href={`/syllabus/${subject.slug}`} key={subject.title}>
+                <div className="subject-guide-card">
 
                 <div className="subject-guide-icon">
                   <BookOpen size={20} />
@@ -422,10 +424,9 @@ const Page = () => {
                 <p>{subject.description}</p>
 
                 {subject.slug ? (
-                <Link href={`/syllabus/${subject.slug}`}>
-                    View Syllabus
-                    <ArrowRight size={16} />
-                </Link>
+                    <button className="view-syllabus">
+                      View Syllabus <ArrowRight size={16} />
+                    </button>
                 ) : (
                 <Link href="/syllabus">
                     View All Subjects
@@ -435,6 +436,8 @@ const Page = () => {
 
 
               </div>
+              </Link>
+
 
             ))}
 
