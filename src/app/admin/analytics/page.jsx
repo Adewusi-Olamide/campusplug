@@ -17,7 +17,7 @@ import { createClient } from '@/lib/supabase/client'
 import './page.css'
 
 const page = () => {
-  const supabase = createClient()
+    const supabase = createClient();
 
   const [activities, setActivities] = useState([])
   const [loading, setLoading] = useState(true)

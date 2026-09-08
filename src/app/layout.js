@@ -14,9 +14,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
 export const metadata = {
   title: "CampusPlug",
   description: "We are dedicated to helping students across all platforms",
+  verification: {
+    google:  "nFThxDa4ZkdJtR3fOSK853qj67LH99BBtXu-YkR3bAA"
+  }
 };
 
 export default function RootLayout({ children }) {
