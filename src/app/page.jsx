@@ -145,7 +145,7 @@ const page = () => {
           <div className="features">
             <div className="left">
               <h1>Ready to Level Up <br /> Your  Study Game?</h1>
-              <p>Join thousands of students who are already <br /> studying smarter and achieving more.</p>
+              <p>Study smarter with practical tools designed to <br /> support  your everyday academic journey</p>
             </div>
 
             <div  className="center">

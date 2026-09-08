@@ -116,7 +116,7 @@ const page = () => {
 
             <div className="notice">
               <h1>Ready to study smarter?</h1>
-              <p>Join thousands of students already using CampusPlug <br /> to power their academic success.</p>
+              <p>Study smarter with practical tools designed to <br /> support  your everyday academic journey</p>
             </div>
           </div>
 
