@@ -10,6 +10,7 @@ import {
   NotebookPen,
   Layers3,
   Target,
+  Laptop,
   ArrowRight,
 } from "lucide-react";
 
@@ -24,11 +25,11 @@ const tools = [
     href: "/study-timer",
   },
   {
-    title: "Tasks & Goal Tracker",
+    title: "CBT Practice",
     description:
-      "Manage your study tasks and keep track of what you've completed.",
-    icon: CheckSquare,
-    href: "/tasks",
+      "Practice real exam-style questions, improve your speed, and build confidence before the big day.",
+    icon: Laptop,
+    href: "/cbt",
   },
   {
     title: "GPA Calculator",
@@ -36,6 +37,13 @@ const tools = [
       "Calculate your GPA quickly and keep track of your academic performance.",
     icon: Calculator,
     href: "/calculator",
+  },
+  {
+    title: "Tasks & Goal Tracker",
+    description:
+      "Manage your study tasks and keep track of what you've completed.",
+    icon: CheckSquare,
+    href: "/tasks",
   },
   {
     title: "Exam Countdown",

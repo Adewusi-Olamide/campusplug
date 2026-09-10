@@ -85,20 +85,20 @@ const Navbar = () => {
     else if (query === "textbook" || query === "textbooks" || query === "my textbook" || query === "my textbooks") {
       router.push("/recommended-textbooks");
     }
-    else if (query === "reset-password" || query === "reset" || query === "password reset") {
+    else if (query === "reset password" || query === "reset" || query === "password reset") {
       router.push("/reset-password");
     }
     else if (query === "focus" || query === "focus mode" || query === "focus-feature") {
       router.push("/focus");
     }
-    else if (query === "exam-tips" || query === "exam-tip") {
+    else if (query === "exam tips" || query === "exam tip") {
       router.push("/exam-tips");
     }
-    else if (query === "exam-history") {
-      router.push("/exam-history");
-    }
-    else if (query === "exam-countdown") {
+    else if (query === "exam countdown") {
       router.push("/exam-countdown");
+    }
+    else if (query === "exam history" || query === "my exam history") {
+      router.push("/exam-history");
     }
     else {
       setNoResults(true);

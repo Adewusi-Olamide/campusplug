@@ -2,6 +2,7 @@
 import { createClient } from "@/lib/supabase/client";
 import React, { useEffect, useMemo, useState } from "react";
 import "./page.css";
+import { useRouter } from "next/navigation";
 import { trackActivity } from "@/lib/trackActivity";
 
 const SUBJECTS = [
@@ -401,6 +402,9 @@ const QUESTION_BANK = {
 const EXAM_DURATION = 30 * 60;
 
 const page = () => {
+  const supabase = createClient();
+  const router = useRouter();
+
   trackActivity("cbt");
   const [stage, setStage] = useState("setup");
 
@@ -467,9 +471,21 @@ const page = () => {
     setCurrentQuestion(0);
   };
 
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (!data.session) {
+        router.replace("/signin");
+      }
+    };
+
+    checkSession();
+  }, [router]);
   
 
   useEffect(() => {
+    
     if (stage !== "exam") return;
 
     if (timeLeft <= 0) {

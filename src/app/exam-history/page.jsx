@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -15,6 +16,9 @@ import Link from "next/link";
 import "./page.css";
 
 const page = () => {
+  const supabase = createClient();
+  const router = useRouter();
+
   const [attempts, setAttempts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,21 +28,16 @@ const page = () => {
     setError("");
 
     try {
-      const supabase = createClient();
-
       const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      if (userError) {
-        throw userError;
-      }
-
-      if (!user) {
-        setError("You must be logged in to view your exam history.");
+      if (!session) {
+        router.replace("/signin");
         return;
       }
+
+      const user = session.user;
 
       const { data, error: attemptsError } = await supabase
         .from("quiz_attempts")

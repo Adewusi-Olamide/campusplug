@@ -1,13 +1,10 @@
-'use client'
 import { Resend } from 'resend'
 import { createClient } from '@supabase/supabase-js'
 import { useState } from 'react'
 
-const supabase = useState();
-
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-const supabaseAdmin = supabase(
+const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 )
@@ -52,11 +49,6 @@ export async function POST(request) {
     .select('*')
     .eq('id', examId)
     .single()
-
-    console.log('EXAM ID FROM CLIENT:', examId)
-    console.log('LOGGED IN USER ID:', user.id)
-    console.log('EXAM FOUND:', exam)
-    console.log('EXAM QUERY ERROR:', examError)
 
     if (examError || !exam) {
     return Response.json(
